@@ -1,0 +1,40 @@
+Chicago-Crime-Forecasting/
+│
+├── README.md               # Project overview and setup instructions
+├── LICENSE                 # Repository license
+│
+├── docs/                   # Documentation and papers
+│   ├── Project_Proposal.md
+│   ├── Academic_Paper.md
+│   └── Medium_Article.md
+│
+├── models/                 # Central folder for model-related scripts and notebooks
+│   ├── notebooks/          # Jupyter notebooks for exploration and presentation
+│   │   ├── 01_Data_Cleaning.ipynb
+│   │   ├── 02_Model_Implementation.ipynb
+│   │   ├── 03_Custom_Model_Development.ipynb
+│   │   ├── 04_Model_Evaluation.ipynb
+│   │   └── 05_Visualization_and_Analysis.ipynb
+│   │
+│   ├── src/                # Source code for models and utilities
+│   │   ├── data/           # Scripts to download or generate data
+│   │   │   ├── fetch_data.py
+│   │   │   └── preprocess_data.py
+│   │   │
+│   │   └── models/         # Model scripts
+│   │       ├── baseline_models.py
+│   │       ├── lstm_model.py
+│   │       ├── transformer_model.py
+│   │       └── ensemble_model.py
+│   │
+│   ├── results/            # Generated analysis results, models, figures, etc.
+│   │   ├── figures/        # Generated graphics and figures for documentation
+│   │   └── models/         # Trained model files
+│   │
+│   └── tests/              # Test cases for your scripts
+│       ├── test_preprocess.py
+│       └── test_models.py
+│
+└── data/                   # Data used in the project (not tracked in Git)
+    ├── raw/                # Raw data, not modified
+    └── processed/          # Cleaned and pre-processed data
