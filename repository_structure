@@ -18,7 +18,6 @@ Chicago-Crime-Forecasting/
 │   │
 │   ├── src/                # Source code for models and utilities
 │   │   ├── data/           # Scripts to download or generate data
-│   │   │   ├── fetch_data.py
 │   │   │   └── preprocess_data.py
 │   │   │
 │   │   └── models/         # Model scripts
