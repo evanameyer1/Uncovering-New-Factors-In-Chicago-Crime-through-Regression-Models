@@ -1,5 +1,7 @@
 import pandas as pd
 import datetime
+from shapely.geometry import Point, Polygon
+from shapely import geometry
 
 # Load the raw crime data
 raw_crime = pd.read_csv('../../data/raw/raw_crime.csv')
@@ -142,6 +144,13 @@ concat_bike_trips['date'] = pd.to_datetime(concat_bike_trips['date'], format='%m
 concat_bike_trips.sort_values(by='date', inplace=True)
 # Reset the index of the dataframe
 concat_bike_trips.reset_index(drop=True, inplace=True)
+
+# Merge bike trips with station data to assign lat, long to each ride
+concat_bike_trips = pd.merge(concat_bike_trips, raw_bike_stations, left_on='station_id', right_on='id', how='left')
+concat_bike_trips = concat_bike_trips[['date', 'station_id', 'station_name', 'lat', 'long']].drop_duplicates()
+concat_bike_trips.reset_index(inplace=True, drop=True)
+concat_bike_trips['id'] = concat_bike_trips.index
+
 # Save the cleaned bike trips data to a CSV file
 concat_bike_trips.to_csv('../../data/processed/clean_bike_trips.csv', index = False)
 
@@ -282,3 +291,40 @@ for column in columns_to_normalize:
 
 # Save the cleaned police sentiment data to a CSV file
 raw_police_sentiment.to_csv('../../data/processed/clean_police_sentiment.csv', index=False)
+
+# Importing the dataset from a CSV file into a pandas DataFrame
+raw_police_districts = pd.read_csv('../../data/raw/raw_police_districts.csv')
+# Renaming the column 'DIST_NUM' to 'district' for better clarity
+raw_police_districts.rename(columns={'DIST_NUM':'district'}, inplace=True)
+# Retaining only the 'district' and 'the_geom' columns for further processing
+raw_police_districts = raw_police_districts[['district','the_geom']]
+
+# Defining a function to convert geometry data from string format to Polygon objects
+def convert_to_polygon(df):
+    updated_polygons = []
+    for row in df['the_geom']:
+        # Removing unnecessary characters to isolate the coordinates
+        target = row.replace('MULTIPOLYGON (((', '').replace(')))', '')
+        # Splitting the string by comma to separate each coordinate pair
+        points = target.split(', ')
+        final = []
+
+        # Converting each coordinate pair from string to tuple of floats
+        for point in points:
+            temp = point.split(' ')
+            tup = float(temp[1].replace(')', '').replace('(', '')), float(temp[0].replace(')', '').replace('(', '')) 
+            final.append(tup)
+            
+        # Creating a Polygon object from the list of tuples
+        polygons = Polygon(final)
+        updated_polygons.append(polygons)
+
+    return updated_polygons
+
+# Applying the conversion function to the DataFrame and storing the results in a new column
+raw_police_districts['geom'] = convert_to_polygon(raw_police_districts)
+# Keeping only the 'district' and 'geom' columns in the DataFrame
+raw_police_districts = raw_police_districts[['district', 'geom']]
+
+# Saving the cleaned and processed data back to a CSV file
+raw_police_districts.to_csv('../../data/processed/clean_police_districts.csv')
