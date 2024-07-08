@@ -17,54 +17,46 @@ raw_crime = raw_crime[(raw_crime['date'] >= '2016-01-01') & (raw_crime['date'] <
 raw_crime.reset_index(drop=True, inplace=True)
 raw_crime.to_csv('../../data/processed/clean_crime.csv', index=False)
 
+# Handling the 3 311-Related Datasets
+def clean_data(df):
+    df = df[['Service Request Number', 'Creation Date', 'Completion Date', 'Type of Service Request', 'Latitude', 'Longitude']]
+    df.rename(columns={'Creation Date':'start_date', 'Completion Date':'end_date', 'Service Request Number':'id', 'Type of Service Request':'type', 'Latitude':'lat', 'Longitude':'long'}, inplace=True)
+    df.dropna(subset=['lat', 'long'], inplace=True)
+    df.drop_duplicates(subset=['id'], inplace=True)
+    
+    df['start_date'] = pd.to_datetime(df['start_date'])
+    df['end_date'] = pd.to_datetime(df['end_date'])
+    df = df[(df['start_date'] >= '2016-01-01') & (df['start_date'] <= '2020-12-31')]
+
+    df.sort_values(by='start_date', inplace=True)
+    df.reset_index(drop=True, inplace=True)
+    return df
+
 # Alley Light Outages Dataset
 raw_alleylights = pd.read_csv('../../data/raw/raw_alleylights.csv')
-raw_alleylights = raw_alleylights[['Creation Date', 'Service Request Number', 'Type of Service Request', 'Latitude', 'Longitude']]
-raw_alleylights.rename(columns={'Creation Date' : 'date', 'Service Request Number' : 'id', 'Type of Service Request' : 'type', 'Latitude': 'lat', 'Longitude' : 'long'}, inplace=True)
-raw_alleylights.dropna(subset=['lat', 'long'], inplace=True)
-raw_alleylights.sort_values(by='date', inplace=True)
-raw_alleylights.reset_index(drop=True, inplace=True)
-raw_alleylights = raw_alleylights[raw_alleylights.duplicated() == False]
-raw_alleylights['type'] = 'alley'
+raw_alleylights = clean_data(raw_alleylights)
 raw_alleylights.to_csv('../../data/processed/clean_alleylights.csv', index=False)
 
 # Streetlights Outage Datasets
-def clean_data(df, type):
-    df = df[['Creation Date', 'Service Request Number', 'Type of Service Request', 'Latitude', 'Longitude']]
-    df.rename(columns={'Creation Date' : 'date', 'Service Request Number' : 'id', 'Type of Service Request' : 'type', 'Latitude': 'lat', 'Longitude' : 'long'}, inplace=True)
-    perc_null = sum(df.lat.isnull()) / len(df)
-    if perc_null <= 0.005:
-        df.dropna(subset=['lat', 'long'], inplace=True)
-    df.sort_values(by='date', inplace=True)
-    df.reset_index(drop=True, inplace=True)
-    df['type'] = type
-    return df
-
 raw_streetlights_allout = pd.read_csv('../../data/raw/raw_streetlights_allout.csv')
-raw_streetlights_allout = clean_data(raw_streetlights_allout, 'sl_all')
+raw_streetlights_allout = clean_data(raw_streetlights_allout)
+raw_streetlights_allout.to_csv('../../data/processed/clean_streetlights_allout.csv', index=False)
 
 raw_streetlights_oneout = pd.read_csv('../../data/raw/raw_streetlights_oneout.csv')
-raw_streetlights_oneout = clean_data(raw_streetlights_oneout, 'sl_one')
+raw_streetlights_oneout = clean_data(raw_streetlights_oneout)
+raw_streetlights_oneout.to_csv('../../data/processed/clean_streetlights_oneout.csv', index=False)
+
 
 # Vacant Buildings Dataset
 raw_vacant_buildings = pd.read_csv('../../data/raw/raw_vacant_buildings.csv')
 raw_vacant_buildings = raw_vacant_buildings[['DATE SERVICE REQUEST WAS RECEIVED', 'SERVICE REQUEST NUMBER', 'SERVICE REQUEST TYPE', 'LATITUDE', 'LONGITUDE']]
 raw_vacant_buildings.rename(columns={'DATE SERVICE REQUEST WAS RECEIVED' : 'date', 'SERVICE REQUEST NUMBER' : 'id', 'SERVICE REQUEST TYPE' : 'type', 'LATITUDE': 'lat', 'LONGITUDE' : 'long'}, inplace=True)
 raw_vacant_buildings.dropna(subset=['lat', 'long'], inplace=True)
+raw_vacant_buildings['date'] = pd.to_datetime(raw_vacant_buildings['date'])
+raw_vacant_buildings = raw_vacant_buildings[(raw_vacant_buildings['date'] >= '2016-01-01') & (raw_vacant_buildings['date'] <= '2020-12-31')]
 raw_vacant_buildings.sort_values(by='date', inplace=True)
 raw_vacant_buildings.reset_index(drop=True, inplace=True)
-raw_vacant_buildings['type'] = 'vacant_building'
 raw_vacant_buildings.to_csv('../../data/processed/clean_vacant_buildings.csv', index=False)
-
-# Combined 311 Dataset
-dfs = [raw_alleylights, raw_streetlights_allout, raw_streetlights_oneout, raw_vacant_buildings]
-raw_311 = pd.concat(dfs)
-raw_311['date'] = pd.to_datetime(raw_311['date'])
-raw_311.sort_values(by='date', inplace=True)
-raw_311.reset_index(drop=True, inplace=True)
-clean_311 = raw_311.tail(-4)
-clean_311 = clean_311[(clean_311['date'] >= '2016-01-01') & (clean_311['date'] <= '2020-12-31')]
-clean_311.to_csv('../../data/processed/clean_311.csv', index=False)
 
 # Bike Trips Dataset
 raw_bike_trips = pd.read_csv('../../data/raw/raw_bike_trips.csv')
