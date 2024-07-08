@@ -99,6 +99,7 @@ def proximity_scan_311(df, col_name, distances):
     return temp_df
 
 patch_datetypes([clean_alleylights, clean_streetlights_allout, clean_streetlights_oneout])
+
 crime_with_alleylights = proximity_scan_311(clean_alleylights, 'alleylights', [0.1, 0.3, 0.5, 1, 3, 5])
 crime_with_streetlights_allout = proximity_scan_311(clean_streetlights_allout, 'streetlights_allout', [0.1, 0.3, 0.5, 1, 3, 5])
 crime_with_streetlights_oneout = proximity_scan_311(clean_streetlights_oneout, 'streetlights_oneout', [0.1, 0.3, 0.5, 1, 3, 5])

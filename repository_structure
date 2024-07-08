@@ -4,27 +4,33 @@ Chicago-Crime-Forecasting/
 ├── LICENSE                 # Repository license
 │
 ├── docs/                   # Documentation and papers
-│   ├── Project_Proposal.md
-│   ├── Academic_Paper.md
-│   └── Medium_Article.md
+│   ├── project_proposal.md
+│   ├── academic_paper.md
+│   └── medium_article.md
 │
 ├── models/                 # Central folder for model-related scripts and notebooks
 │   ├── notebooks/          # Jupyter notebooks for exploration and presentation
-│   │   ├── 01_Data_Cleaning.ipynb
-│   │   ├── 02_Model_Implementation.ipynb
-│   │   ├── 03_Custom_Model_Development.ipynb
-│   │   ├── 04_Model_Evaluation.ipynb
-│   │   └── 05_Visualization_and_Analysis.ipynb
+│   │   ├── 01_data_preprocessing.ipynb          # Reading, cleaning, and preparing initial datasets
+│   │   ├── 02_geospatial_analysis.ipynb         # Mapping and analyzing geospatial data for district correlation
+│   │   ├── 03_proximity_analysis.ipynb          # Calculating proximity metrics for objects within specified distances
+│   │   ├── 04_feature_engineering.ipynb         # Enhancing the feature set with lag, lead, and aggregate variables
+│   │   ├── 05_feature_selection.ipynb           # Applying feature selection techniques for optimal model input
 │   │
 │   ├── src/                # Source code for models and utilities
 │   │   ├── data/           # Scripts to download or generate data
-│   │   │   └── preprocess_data.py
+│   │   │   ├── 01_data_preprocessing.py
+│   │   │   ├── 02_geospatial_analysis.py
+│   │   │   ├── 03_proximity_analysis.py
+│   │   │   ├── 04_feature_engineering.py
+│   │   │   └── 05_feature_selection.py
 │   │   │
 │   │   └── models/         # Model scripts
-│   │       ├── baseline_models.py
-│   │       ├── lstm_model.py
+│   │       ├── linear_regression.py
+│   │       ├── random_forest.py
+│   │       ├── arima.py
+│   │       ├── var.py
 │   │       ├── transformer_model.py
-│   │       └── ensemble_model.py
+│   │       └── custom_lstm_model.py
 │   │
 │   ├── results/            # Generated analysis results, models, figures, etc.
 │   │   ├── figures/        # Generated graphics and figures for documentation
@@ -36,4 +42,5 @@ Chicago-Crime-Forecasting/
 │
 └── data/                   # Data used in the project (not tracked in Git)
     ├── raw/                # Raw data, not modified
+    ├── pre_training/       # Feature datasets       
     └── processed/          # Cleaned and pre-processed data
