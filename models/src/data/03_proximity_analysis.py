@@ -111,9 +111,9 @@ crime_with_proximity = pd.concat([
     crime_with_bikes, 
     crime_with_buses, 
     crime_with_trains, 
-    clean_alleylights, 
-    clean_streetlights_allout, 
-    clean_streetlights_oneout
+    crime_with_alleylights, 
+    crime_with_streetlights_allout, 
+    crime_with_streetlights_oneout
 ], axis=1).drop('point', axis=1)
 
 crime_with_proximity.to_csv('../../data/pre_training/crime_with_proximity.csv', index=False)

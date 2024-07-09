@@ -104,6 +104,7 @@ clean_police_districts = clean_police_districts.merge(right=clean_disadvantaged_
 clean_bike_trips.to_csv('../../data/processed/clean_bike_trips.csv', index=False)
 clean_train_ridership.to_csv('../../data/processed/clean_train_ridership.csv', index=False)
 clean_police_districts.to_csv('../../data/processed/clean_police_districts.csv', index=False)
+clean_public_healthindicator.to_csv('../../data/processed/clean_public_healthindicator.csv', index=False)
 
 def save_data():
     for df_name, df in data.items():
