@@ -1,0 +1,11 @@
+Area Model Performance Metrics:
+Mean Squared Error (MSE): 4.871171080318345e-06
+Root Mean Squared Error (RMSE): 0.002207072966695561
+Mean Absolute Error (MAE): 0.0011713773636931421
+R^2 Score: 0.2061709624032364
+
+District Model Performance Metrics:
+Mean Squared Error (MSE): 1.5032524959151278e-05
+Root Mean Squared Error (RMSE): 0.003877180026662584
+Mean Absolute Error (MAE): 0.0024246040724894974
+R^2 Score: 0.2153026045330554

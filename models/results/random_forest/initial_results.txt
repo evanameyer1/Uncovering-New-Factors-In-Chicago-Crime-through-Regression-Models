@@ -1,0 +1,406 @@
+Area Model Accuracy before feature selection: 0.8629
+Area Model Accuracy after feature selection at cum sum 0.91: 0.8807
+
+Area Model Feature Importances:
+bus_stops_distance_0.1 - importance: 0.3236111715366754
+alleylights_distance_0.1 - importance: 0.1338909548983108
+police_stations_distance_1 - importance: 0.120102326842759
+area_id_target_encoded - importance: 0.06321775475607577
+streetlights_allout_distance_0.5 - importance: 0.05566059275182587
+streetlights_allout_distance_0.3 - importance: 0.03171115844880379
+train_stations_distance_0.5 - importance: 0.02645685868702129
+streetlights_oneout_distance_0.1 - importance: 0.025252022768181323
+streetlights_oneout_distance_0.3 - importance: 0.02404909788974525
+bike_rides_within_0.5_and_15_min - importance: 0.019594920657151755
+bike_stations_distance_0.1 - importance: 0.012250492222014648
+bike_stations_distance_0.3 - importance: 0.008756746318472189
+train_stations_distance_0.3 - importance: 0.008582821789453772
+police_stations_distance_0.5 - importance: 0.007478851318298078
+police_stations_distance_3 - importance: 0.005562225770422503
+bike_rides_within_0.3_and_15_min - importance: 0.004445931901432607
+train_stations_distance_0.1 - importance: 0.0038898538356954004
+bus_stops_distance_0.3 - importance: 0.003723441328448125
+police_stations_distance_5 - importance: 0.0035907773498803585
+district_crowded_housing - importance: 0.0035489053786666187
+bus_stops_distance_1 - importance: 0.003422663659298689
+bike_rides_within_0.3_and_10_min - importance: 0.003173320094240676
+district_unemployment - importance: 0.0029673679822600396
+area_crimes_1_hours_prev - importance: 0.0028339805869161956
+district_crimes_24_hours_prev - importance: 0.002666872045126479
+train_stations_distance_5 - importance: 0.0026554596721507073
+district_per_capita_income - importance: 0.002558541090396315
+district_gov_depend - importance: 0.002541480351677091
+streetlights_allout_distance_3 - importance: 0.0025185414046627603
+streetlights_allout_distance_1 - importance: 0.0024763307608392203
+bus_stops_distance_0.5 - importance: 0.0024452683142895263
+bike_rides_within_0.1_and_5_min - importance: 0.0024315934571684686
+bus_stops_distance_5 - importance: 0.002375368807828356
+area_crimes_24_hours_prev - importance: 0.002315286610666468
+district_crimes_1_hours_prev - importance: 0.002311133844940462
+streetlights_allout_distance_5 - importance: 0.0023024667787773447
+streetlights_oneout_distance_3 - importance: 0.0022950222437689073
+district_crimes_12_hours_prev - importance: 0.002292585825052594
+streetlights_allout_distance_0.1 - importance: 0.002274789881947804
+alleylights_distance_5 - importance: 0.0022325025789302314
+alleylights_distance_3 - importance: 0.0022162560529580618
+bike_rides_within_0.5_and_5_min - importance: 0.0022041743175864026
+bus_stops_distance_3 - importance: 0.002191714775843638
+hour - importance: 0.002183946782567751
+day - importance: 0.002146688447882293
+district_no_hs_dip - importance: 0.002140566684218759
+alleylights_distance_1 - importance: 0.0021173068632114114
+train_stations_distance_1 - importance: 0.0021056406853032714
+bike_stations_distance_3 - importance: 0.002059799574777593
+bike_stations_distance_5 - importance: 0.0020369512006785163
+bike_stations_distance_1 - importance: 0.0019420205935394793
+train_stations_distance_3 - importance: 0.0019413347976014205
+streetlights_oneout_distance_1 - importance: 0.0019410919925992478
+area_crimes_6_hours_prev - importance: 0.0019397366579315294
+alleylights_distance_0.3 - importance: 0.0019162719853469791
+streetlights_oneout_distance_0.5 - importance: 0.0019023034010940737
+disadvantaged_score - importance: 0.0018489425992251254
+streetlights_oneout_distance_5 - importance: 0.0018338213325741776
+district_crimes_6_hours_prev - importance: 0.001738120541574414
+area_crimes_12_hours_prev - importance: 0.0016973784776718882
+bike_rides_within_0.3_and_5_min - importance: 0.0016911206850258398
+district_crimes_3_hours_prev - importance: 0.0016505605718868863
+bike_rides_within_0.5_and_10_min - importance: 0.0015994585816732465
+alleylights_distance_0.5 - importance: 0.0015164263712073467
+bike_rides_within_0.1_and_10_min - importance: 0.00139180842669706
+bike_stations_distance_0.5 - importance: 0.001313473925266595
+area_crimes_3_hours_prev - importance: 0.0012903631594441498
+police_stations_distance_0.3 - importance: 0.0012164223685954072
+bike_rides_within_0.1_and_15_min - importance: 0.001191146787548376
+area_no_hs_dip - importance: 0.001180970208394588
+month - importance: 0.001179687445759939
+district_below_pov - importance: 0.0011208625682743367
+area_crowded_housing - importance: 0.001041393155341429
+area_per_capita_income - importance: 0.001004053031901657
+day_of_week - importance: 0.0008836215014024114
+rides - importance: 0.0007570594700265551
+area_below_pov - importance: 0.0007521145576183907
+area_id_freq_encoded - importance: 0.0005649808576467737
+area_unemployment - importance: 0.0004952535633861662
+district - importance: 0.00038710851953013744
+police_stations_distance_0.1 - importance: 0.0003838988499369522
+year - importance: 0.00036430704131772276
+area_gov_depend - importance: 0.00028275963135939786
+hourly_bike_rides - importance: 0.00016959851629964821
+
+--------------------------------------------------------------------
+
+District Model Accuracy before feature selection: 0.8936
+District Model Accuracy after feature selection (0.95): 0.8762
+District Model Accuracy after feature selection at cum sum 0.93: 0.9027
+
+bus_stops_distance_0.1 - importance: 0.2594795749608011
+streetlights_allout_distance_0.5 - importance: 0.19749089287279017
+alleylights_distance_0.1 - importance: 0.10773824834458416
+police_stations_distance_1 - importance: 0.1052024497552673
+streetlights_allout_distance_0.3 - importance: 0.10398114153757142
+streetlights_oneout_distance_0.1 - importance: 0.023124254296795797
+bike_rides_within_0.5_and_15_min - importance: 0.019760575410231275
+streetlights_oneout_distance_0.3 - importance: 0.019329676536553105
+police_stations_distance_0.5 - importance: 0.009144753399049165
+police_stations_distance_3 - importance: 0.008282763649063605
+bike_stations_distance_0.1 - importance: 0.00813461376757355
+streetlights_allout_distance_5 - importance: 0.006847662192296204
+streetlights_allout_distance_3 - importance: 0.00654540631426566
+day - importance: 0.0060440234701411265
+train_stations_distance_0.1 - importance: 0.005209798868947944
+area_crimes_1_hours_prev - importance: 0.004954678789595576
+bike_rides_within_0.1_and_5_min - importance: 0.0047714910274301294
+train_stations_distance_0.3 - importance: 0.004577292319654852
+area_crimes_24_hours_prev - importance: 0.004053675748741934
+district_crimes_1_hours_prev - importance: 0.0036040200507455235
+area_crimes_3_hours_prev - importance: 0.0034825631754035985
+streetlights_oneout_distance_0.5 - importance: 0.00311392259138912
+bus_stops_distance_0.3 - importance: 0.003028583578009453
+bus_stops_distance_1 - importance: 0.0030165539618272797
+streetlights_allout_distance_1 - importance: 0.0028984001477446856
+bike_rides_within_0.1_and_10_min - importance: 0.0026826116622680803
+bike_stations_distance_0.3 - importance: 0.002592920297179292
+streetlights_oneout_distance_5 - importance: 0.002575817343605098
+police_stations_distance_5 - importance: 0.0024392655012279974
+train_stations_distance_0.5 - importance: 0.0024035843197662754
+district_crimes_24_hours_prev - importance: 0.0023333474079745937
+alleylights_distance_3 - importance: 0.002303061058106611
+train_stations_distance_5 - importance: 0.002106524991694744
+streetlights_oneout_distance_1 - importance: 0.0021043232787311627
+streetlights_allout_distance_0.1 - importance: 0.0020571141601904573
+train_stations_distance_1 - importance: 0.0019857494209007966
+alleylights_distance_5 - importance: 0.0019622334826533334
+month - importance: 0.001954742059871163
+bike_rides_within_0.1_and_15_min - importance: 0.0019469782782159876
+district_crimes_6_hours_prev - importance: 0.0018539868980217767
+alleylights_distance_0.5 - importance: 0.0018213730903053765
+hour - importance: 0.00181920315523593
+area_crimes_12_hours_prev - importance: 0.0018017862165713625
+streetlights_oneout_distance_3 - importance: 0.0017681145399216231
+alleylights_distance_0.3 - importance: 0.0017584580447569185
+bike_rides_within_0.5_and_5_min - importance: 0.0017017242744677857
+area_crimes_6_hours_prev - importance: 0.001677164550233203
+bus_stops_distance_3 - importance: 0.001620127925913152
+area_crowded_housing - importance: 0.001588970369810678
+district_crimes_12_hours_prev - importance: 0.001581333807408051
+bus_stops_distance_0.5 - importance: 0.001523867966702143
+district_crimes_3_hours_prev - importance: 0.0014229104692764466
+district_target_encoded - importance: 0.001393728014440741
+alleylights_distance_1 - importance: 0.0013870275063813473
+bike_rides_within_0.5_and_10_min - importance: 0.00136777502332503
+bike_rides_within_0.3_and_5_min - importance: 0.0013117218568528273
+train_stations_distance_3 - importance: 0.0012671742735344182
+district_crowded_housing - importance: 0.0012592187576136002
+bus_stops_distance_5 - importance: 0.0012396788908312756
+bike_rides_within_0.3_and_15_min - importance: 0.001202307177462634
+bike_stations_distance_0.5 - importance: 0.0011790567133377135
+bike_stations_distance_3 - importance: 0.0010568498765017025
+bike_stations_distance_5 - importance: 0.0010035215155728987
+police_stations_distance_0.3 - importance: 0.0009755651765575406
+bike_rides_within_0.3_and_10_min - importance: 0.0009538058113087166
+bike_stations_distance_1 - importance: 0.0009151666559695641
+area_below_pov - importance: 0.0008947268969130295
+day_of_week - importance: 0.0006625195014978838
+area_gov_depend - importance: 0.0006518111424917468
+district_gov_depend - importance: 0.0005586378761848601
+area_per_capita_income - importance: 0.0005471565390406697
+district_no_hs_dip - importance: 0.00047941964662655343
+rides - importance: 0.0004030446216989629
+police_stations_distance_0.1 - importance: 0.00027500414775188595
+year - importance: 0.00025029616570988267
+hourly_bike_rides - importance: 0.00024490320541013506
+area_no_hs_dip - importance: 0.00024362048610021412
+district_per_capita_income - importance: 0.0002361658513997342
+district_below_pov - importance: 0.00021933726151876991
+district_unemployment - importance: 0.00021614521610610583
+disadvantaged_score - importance: 0.00020199454711189286
+area_unemployment - importance: 0.00019830830726389622
+district_freq_encoded - importance: 0.0
+
+Area Model Accuracy before feature selection: 0.8867
+Area Model Accuracy after feature selection: 0.8890
+
+--------------------------------------------------------------------
+District Feature Selection With Variable Cum Sums
+
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    3.3s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:   12.1s finished
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:    0.0s finished
+Accuracy after feature selection at cum sum 0.9: 0.8983
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    3.8s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:   14.2s finished
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:    0.0s finished
+Accuracy after feature selection at cum sum 0.91: 0.9000
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    5.6s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:   20.8s finished
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:    0.0s finished
+Accuracy after feature selection at cum sum 0.92: 0.9011
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    7.4s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:   27.2s finished
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:    0.0s finished
+Accuracy after feature selection at cum sum 0.93: 0.9027
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    8.7s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:   31.3s finished
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:    0.1s finished
+Accuracy after feature selection at cum sum 0.9400000000000001: 0.9021
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:   11.8s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:   41.9s finished
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:    0.0s finished
+Accuracy after feature selection at cum sum 0.9500000000000001: 0.8976
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:   17.3s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:  1.0min finished
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:    0.1s finished
+Accuracy after feature selection at cum sum 0.9600000000000001: 0.8975
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:   20.2s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:  1.2min finished
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:    0.1s finished
+Accuracy after feature selection at cum sum 0.9700000000000001: 0.8944
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:   22.4s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:  1.5min finished
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:    0.1s finished
+Accuracy after feature selection at cum sum 0.9800000000000001: 0.8959
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:   29.9s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:  1.8min finished
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:    0.1s finished
+Accuracy after feature selection at cum sum 0.9900000000000001: 0.8952
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:   36.0s
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:  2.1min finished
+[Parallel(n_jobs=15)]: Using backend ThreadingBackend with 15 concurrent workers.
+[Parallel(n_jobs=15)]: Done  20 tasks      | elapsed:    0.0s
+Accuracy after feature selection at cum sum 1.0: 0.8943
+[Parallel(n_jobs=15)]: Done 100 out of 100 | elapsed:    0.1s finished
+
+--------------------------------------------------------------------
+Area Feature Selection With Variable Cum Sums
+
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:   46.4s
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:  3.8min finished
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:    0.1s
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:    0.8s finished
+Accuracy after feature selection at cum sum 0.9: 0.8746
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:   53.7s
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:  4.2min finished
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:    0.1s
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:    0.8s finished
+Accuracy after feature selection at cum sum 0.91: 0.8807
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:  1.0min
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:  4.8min finished
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:    0.1s
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:    0.8s finished
+Accuracy after feature selection at cum sum 0.92: 0.8778
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:  1.3min
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:  6.2min finished
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:    0.1s
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:    0.9s finished
+Accuracy after feature selection at cum sum 0.93: 0.8692
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:  1.5min
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:  7.1min finished
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:    0.1s
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:    1.0s finished
+Accuracy after feature selection at cum sum 0.9400000000000001: 0.8727
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:  1.8min
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:  8.5min finished
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:    0.1s
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:    1.0s finished
+Accuracy after feature selection at cum sum 0.9500000000000001: 0.8637
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:  1.9min
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:  9.6min finished
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:    0.1s
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:    0.9s finished
+Accuracy after feature selection at cum sum 0.9600000000000001: 0.8652
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:  2.2min
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed: 11.0min finished
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:    0.1s
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:    0.9s finished
+Accuracy after feature selection at cum sum 0.9700000000000001: 0.8652
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:  2.4min
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed: 12.0min finished
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:    0.2s
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:    1.1s finished
+Accuracy after feature selection at cum sum 0.9800000000000001: 0.8677
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:  2.7min
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed: 13.9min finished
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:    0.1s
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:    1.0s finished
+Accuracy after feature selection at cum sum 0.9900000000000001: 0.8666
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:  3.5min
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed: 17.6min finished
+[Parallel(n_jobs=20)]: Using backend ThreadingBackend with 20 concurrent workers.
+[Parallel(n_jobs=20)]: Done  10 tasks      | elapsed:    0.1s
+Accuracy after feature selection at cum sum 1.0: 0.8692
+[Parallel(n_jobs=20)]: Done 100 out of 100 | elapsed:    1.1s finished
+
+--------------------------------------------------------------------
+Area Top Features
+
+24              bus_stops_distance_0.1
+36            alleylights_distance_0.1
+15          police_stations_distance_1
+82              area_id_target_encoded
+44    streetlights_allout_distance_0.5
+43    streetlights_allout_distance_0.3
+32         train_stations_distance_0.5
+48    streetlights_oneout_distance_0.1
+49    streetlights_oneout_distance_0.3
+62    bike_rides_within_0.5_and_15_min
+18          bike_stations_distance_0.1
+19          bike_stations_distance_0.3
+31         train_stations_distance_0.3
+14        police_stations_distance_0.5
+16          police_stations_distance_3
+61    bike_rides_within_0.3_and_15_min
+27                bus_stops_distance_1
+25              bus_stops_distance_0.3
+30         train_stations_distance_0.1
+17          police_stations_distance_5
+68            district_crowded_housing
+58    bike_rides_within_0.3_and_10_min
+46      streetlights_allout_distance_3
+56     bike_rides_within_0.5_and_5_min
+77            area_crimes_1_hours_prev
+26              bus_stops_distance_0.5
+35           train_stations_distance_5
+67                 district_gov_depend
+Name: feature, dtype: object
+
+--------------------------------------------------------------------
+District Top Features
+
+23              bus_stops_distance_0.1
+43    streetlights_allout_distance_0.5
+14          police_stations_distance_1
+42    streetlights_allout_distance_0.3
+35            alleylights_distance_0.1
+47    streetlights_oneout_distance_0.1
+48    streetlights_oneout_distance_0.3
+61    bike_rides_within_0.5_and_15_min
+13        police_stations_distance_0.5
+15          police_stations_distance_3
+80           area_crimes_24_hours_prev
+17          bike_stations_distance_0.1
+53     bike_rides_within_0.1_and_5_min
+29         train_stations_distance_0.1
+45      streetlights_allout_distance_3
+76            area_crimes_1_hours_prev
+30         train_stations_distance_0.3
+49    streetlights_oneout_distance_0.5
+26                bus_stops_distance_1
+77            area_crimes_3_hours_prev
+71        district_crimes_1_hours_prev
+18          bike_stations_distance_0.3
+0                                  day
+50      streetlights_oneout_distance_1
+44      streetlights_allout_distance_1
+Name: feature, dtype: object
