@@ -87,6 +87,15 @@ year - importance: 0.00036430704131772276
 area_gov_depend - importance: 0.00028275963135939786
 hourly_bike_rides - importance: 0.00016959851629964821
 
+Initial Results:
+Mean Absolute Error (MAE): 0.000125
+Mean Squared Error (MSE): 0.000001
+Root Mean Squared Error (RMSE): 0.000919
+Relative Root Mean Squared Error (Relative RMSE): 0.003424
+R-squared (R²): 0.862281
+Adjusted R-squared: 0.862277
+Median Absolute Error: 0.000000
+
 --------------------------------------------------------------------
 
 District Model Accuracy before feature selection: 0.8936
@@ -177,8 +186,13 @@ disadvantaged_score - importance: 0.00020199454711189286
 area_unemployment - importance: 0.00019830830726389622
 district_freq_encoded - importance: 0.0
 
-Area Model Accuracy before feature selection: 0.8867
-Area Model Accuracy after feature selection: 0.8890
+Mean Absolute Error (MAE): 0.000303
+Mean Squared Error (MSE): 0.000002
+Root Mean Squared Error (RMSE): 0.001429
+Relative Root Mean Squared Error (Relative RMSE): 0.005025
+R-squared (R²): 0.893386
+Adjusted R-squared: 0.893342
+Median Absolute Error: 0.000000
 
 --------------------------------------------------------------------
 District Feature Selection With Variable Cum Sums

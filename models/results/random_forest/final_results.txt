@@ -36,8 +36,13 @@ district_gov_depend: 0.01385190695949092
 Dataset Max: 0.268519 | Dataset Min: 0.0 | Dataset Avg: 0.00072
 
 - Model Performance
-RMSE: 0.000774
-RMSE relative to data: 0.3%
+Mean Absolute Error (MAE): 0.000110
+Mean Squared Error (MSE): 0.000001
+Root Mean Squared Error (RMSE): 0.000778
+Relative Root Mean Squared Error (Relative RMSE): 0.002899
+R-squared (R²): 0.901241
+Adjusted R-squared: 0.901240
+Median Absolute Error: 0.000000
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -76,5 +81,10 @@ streetlights_allout_distance_1: 0.009834686946213306
 Dataset Max: 0.284404 | Dataset Min: 0.0 | Dataset Avg: 0.002071
 
 - Model Performance
-RMSE: 0.0013
-RMSE relative to data: 0.5%
+Mean Absolute Error (MAE): 0.000236
+Mean Squared Error (MSE): 0.000002
+Root Mean Squared Error (RMSE): 0.001311
+Relative Root Mean Squared Error (Relative RMSE): 0.004611
+R-squared (R²): 0.910248
+Adjusted R-squared: 0.910237
+Median Absolute Error: 0.000025
