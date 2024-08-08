@@ -1,90 +1,41 @@
-Final Results for the Area Model
-
-- Best Parameters for Area Model: {'max_depth': None, 'max_features': 16, 'max_leaf_nodes': None, 'max_samples': 0.3, 'min_samples_leaf': 1, 'min_samples_split': 76, 'n_estimators': 100}
-
-- Feature Importances: 
-bus_stops_distance_0.1: 0.2119138034664852
-alleylights_distance_0.1: 0.15609481363089153
-police_stations_distance_1: 0.056987813991470904
-area_id_target_encoded: 0.05700418106883146
-streetlights_allout_distance_0.5: 0.07508951347726346
-streetlights_allout_distance_0.3: 0.05673071043888659
-train_stations_distance_0.5: 0.03787513348499454
-streetlights_oneout_distance_0.1: 0.03623593981392917
-streetlights_oneout_distance_0.3: 0.09086033635361175
-bike_rides_within_0.5_and_15_min: 0.026270749059572253
-bike_stations_distance_0.1: 0.015245820660954385
-bike_stations_distance_0.3: 0.01556649895934474
-train_stations_distance_0.3: 0.020913629739604932
-police_stations_distance_0.5: 0.01221731662383886
-police_stations_distance_3: 0.008973724372244517
-bike_rides_within_0.3_and_15_min: 0.00836738053847319
-bus_stops_distance_1: 0.0058167693127791995
-bus_stops_distance_0.3: 0.03025385709108102
-train_stations_distance_0.1: 0.0034047553607343337
-police_stations_distance_5: 0.007389899957651708
-district_crowded_housing: 0.022843664622106654
-bike_rides_within_0.3_and_10_min: 0.003953053871373288
-streetlights_allout_distance_3: 0.004952048445682388
-bike_rides_within_0.5_and_5_min: 0.006410804158809639
-area_crimes_1_hours_prev: 0.004997102410531693
-bus_stops_distance_0.5: 0.0057035158625577355
-train_stations_distance_5: 0.00407525626680417
-district_gov_depend: 0.01385190695949092
-
-- Model Ranges
-Dataset Max: 0.268519 | Dataset Min: 0.0 | Dataset Avg: 0.00072
-
-- Model Performance
-Mean Absolute Error (MAE): 0.000110
-Mean Squared Error (MSE): 0.000001
-Root Mean Squared Error (RMSE): 0.000778
-Relative Root Mean Squared Error (Relative RMSE): 0.002899
-R-squared (R²): 0.901241
-Adjusted R-squared: 0.901240
-Median Absolute Error: 0.000000
-
-----------------------------------------------------------------------------------------------------------------------------------------
-
 Final Results for the District Model
 
-- Best Parameters for District Model: {'max_depth': None, 'max_features': 18, 'max_leaf_nodes': None, 'max_samples': None, 'min_samples_leaf': 1, 'min_samples_split': 8, 'n_estimators': 300}
+- Final Features:
+['bus_stops_distance_0.1',
+ 'alleylights_distance_0.1',
+ 'police_stations_distance_1',
+ 'streetlights_allout_distance_0.5',
+ 'bike_rides_within_0.5_and_15_min',
+ 'streetlights_allout_distance_0.3',
+ 'streetlights_oneout_distance_0.1',
+ 'train_stations_distance_0.3']
+
+- Best Parameters for District Model: {'max_depth': None, 'max_features': 6, 'max_leaf_nodes': None, 'max_samples': None, 'min_samples_leaf': 1, 'min_samples_split': 20, 'n_estimators': 100}
 
 - Feature Importances:
-bus_stops_distance_0.1: 0.21354532771729212
-streetlights_allout_distance_0.5: 0.14315859928686941
-police_stations_distance_1: 0.1383523284842185
-streetlights_allout_distance_0.3: 0.09378607429395336
-alleylights_distance_0.1: 0.13028889503979713
-streetlights_oneout_distance_0.1: 0.03353341346673674
-streetlights_oneout_distance_0.3: 0.07040470298092862
-bike_rides_within_0.5_and_15_min: 0.025819767335113417
-police_stations_distance_0.5: 0.02674853278547871
-police_stations_distance_3: 0.010432148896461555
-area_crimes_24_hours_prev: 0.005711924898357271
-bike_stations_distance_0.1: 0.010094530685571142
-bike_rides_within_0.1_and_5_min: 0.01989522757904557
-train_stations_distance_0.1: 0.0069265461444780446
-streetlights_allout_distance_3: 0.006803712971602353
-area_crimes_1_hours_prev: 0.006026937204131828
-train_stations_distance_0.3: 0.008615278180111279
-streetlights_oneout_distance_0.5: 0.007941745960088696
-bus_stops_distance_1: 0.007107010549385805
-area_crimes_3_hours_prev: 0.00737233749301873
-district_crimes_1_hours_prev: 0.005311677995007637
-bike_stations_distance_0.3: 0.004931360909857591
-day: 0.002958658765536997
-streetlights_oneout_distance_1: 0.004398573430744234
-streetlights_allout_distance_1: 0.009834686946213306
-
-- Model Ranges
-Dataset Max: 0.284404 | Dataset Min: 0.0 | Dataset Avg: 0.002071
+bus_stops_distance_0.1: 0.23702343278860458
+alleylights_distance_0.1: 0.18985335035294687
+police_stations_distance_1: 0.16947511492857767
+streetlights_allout_distance_0.5: 0.16469587168939454
+bike_rides_within_0.5_and_15_min: 0.05115912059153898
+streetlights_allout_distance_0.3: 0.0836592179994653
+streetlights_oneout_distance_0.1: 0.06680886756646598
+train_stations_distance_0.3: 0.03732502408300607
 
 - Model Performance
-Mean Absolute Error (MAE): 0.000236
+Mean Absolute Error (MAE): 0.000304
 Mean Squared Error (MSE): 0.000002
-Root Mean Squared Error (RMSE): 0.001311
-Relative Root Mean Squared Error (Relative RMSE): 0.004611
-R-squared (R²): 0.910248
-Adjusted R-squared: 0.910237
-Median Absolute Error: 0.000025
+Root Mean Squared Error (RMSE): 0.001458
+Relative Root Mean Squared Error (Relative RMSE): 0.005126
+R-squared (R²): 0.889061
+Adjusted R-squared: 0.889057
+Median Absolute Error: 0.000045
+
+- Non-Zero Performance
+Mean Absolute Error (MAE): 0.000558
+Mean Squared Error (MSE): 0.000007
+Root Mean Squared Error (RMSE): 0.002699
+Relative Root Mean Squared Error (Relative RMSE): 0.009490
+R-squared (R²): 0.742392
+Adjusted R-squared: 0.742354
+Median Absolute Error: 0.000091

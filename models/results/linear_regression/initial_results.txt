@@ -1,0 +1,178 @@
+Area Features Dropped
+
+1. bike_rides_within_0.5_and_10_min with VIF score of: 401.4052943825488
+2. bus_stops_distance_5 with VIF score of: 178.29463723156573
+3. bike_stations_distance_5 with VIF score of: 159.49171360642686
+4. bike_rides_within_0.3_and_10_min with VIF score of: 134.32440765531945
+5. district_crowded_housing with VIF score of: 93.04097387416894
+6. bike_rides_within_0.5_and_15_min with VIF score of: 83.24376165374916
+7. streetlights_oneout_distance_3 with VIF score of: 75.48743319826409
+8. bus_stops_distance_3 with VIF score of: 73.0428764288829
+9. district_below_pov with VIF score of: 60.71965142948139
+10. alleylights_distance_5 with VIF score of: 47.52779073945321
+11. area_crimes_24_hours_prev with VIF score of: 39.748954149816754
+12. bike_stations_distance_3 with VIF score of: 38.231513277254166
+13. bike_rides_within_0.1_and_10_min with VIF score of: 34.541828425667376
+14. district_crimes_24_hours_prev with VIF score of: 34.166913289014765
+15. bus_stops_distance_1 with VIF score of: 29.02891394024897
+16. district_gov_depend with VIF score of: 28.57481670519299
+17. bike_rides_within_0.3_and_15_min with VIF score of: 28.245345769808313
+18. bike_stations_distance_1 with VIF score of: 23.83647872643091
+19. area_crimes_12_hours_prev with VIF score of: 21.69409734484798
+20. bus_stops_distance_0.5 with VIF score of: 18.947950167175186
+21. area_id_freq_encoded with VIF score of: 18.121530117933148
+22. streetlights_allout_distance_5 with VIF score of: 17.840425721474702
+23. police_stations_distance_5 with VIF score of: 17.326083339079904
+24. train_stations_distance_3 with VIF score of: 17.250486126522954
+25. district_crimes_12_hours_prev with VIF score of: 16.971359959740823
+26. alleylights_distance_1 with VIF score of: 15.946724658991709
+27. disadvantaged_score with VIF score of: 13.12614807770934
+28. streetlights_oneout_distance_1 with VIF score of: 12.819048695410466
+29. area_crimes_6_hours_prev with VIF score of: 12.451868163768712
+30. bike_stations_distance_0.5 with VIF score of: 10.42077191463409
+31. bike_rides_within_0.3_and_5_min with VIF score of: 9.81558821618316
+32. area_no_hs_dip with VIF score of: 9.719225554711489
+33. alleylights_distance_0.5 with VIF score of: 9.678000905910256
+34. streetlights_oneout_distance_5 with VIF score of: 9.16322698084412
+35. district_crimes_6_hours_prev with VIF score of: 9.148752203444628
+36. district_unemployment with VIF score of: 7.868932141534218
+37. bike_rides_within_0.1_and_15_min with VIF score of: 7.796504119984188
+38. train_stations_distance_1 with VIF score of: 6.59480720824089
+39. streetlights_oneout_distance_0.5 with VIF score of: 5.81447677391352
+40. bus_stops_distance_0.3 with VIF score of: 5.759381169115446
+41. train_stations_distance_5 with VIF score of: 5.520909698985614
+42. area_per_capita_income with VIF score of: 5.251369141585594
+
+District Features Dropped
+
+1. bike_rides_within_0.5_and_10_min with VIF score of: 392.1764921388526
+2. bike_stations_distance_5 with VIF score of: 181.03853926801185
+3. bike_rides_within_0.3_and_10_min with VIF score of: 128.48035867484194
+4. bus_stops_distance_5 with VIF score of: 122.89001826206136
+5. district_crowded_housing with VIF score of: 82.35102363068368
+6. bike_rides_within_0.5_and_15_min with VIF score of: 82.07573325486646
+7. bike_stations_distance_3 with VIF score of: 72.01935423455305
+8. streetlights_oneout_distance_3 with VIF score of: 69.98447324045763
+9. bus_stops_distance_0.5 with VIF score of: 58.02848738351439
+10. bike_stations_distance_1 with VIF score of: 50.61812683520229
+11. district_below_pov with VIF score of: 50.141979499930144
+12. alleylights_distance_5 with VIF score of: 36.87729435641179
+13. bus_stops_distance_1 with VIF score of: 33.56100845329381
+14. area_crimes_12_hours_prev with VIF score of: 32.252392019372564
+15. bike_rides_within_0.1_and_10_min with VIF score of: 32.08387370984953
+16. district_gov_depend with VIF score of: 30.377165839555506
+17. bike_rides_within_0.3_and_15_min with VIF score of: 26.96234067061581
+18. train_stations_distance_3 with VIF score of: 24.62210324783792
+19. district_crimes_24_hours_prev with VIF score of: 23.542073992314076
+20. bike_stations_distance_0.5 with VIF score of: 22.652587131032522
+21. area_no_hs_dip with VIF score of: 18.895558617120873
+22. bus_stops_distance_3 with VIF score of: 18.628764651585023
+23. train_stations_distance_0.5 with VIF score of: 17.470923757642524
+24. district_unemployment with VIF score of: 16.358756379828023
+25. streetlights_allout_distance_3 with VIF score of: 15.578050785301913
+26. area_crimes_6_hours_prev with VIF score of: 14.466139579268148
+27. streetlights_oneout_distance_1 with VIF score of: 13.552616670136361
+28. police_stations_distance_5 with VIF score of: 13.23650422767752
+29. alleylights_distance_1 with VIF score of: 12.493920548190033
+30. district_per_capita_income with VIF score of: 12.401904589971782
+31. district_crimes_12_hours_prev with VIF score of: 11.364793853773543
+32. area_unemployment with VIF score of: 10.505275635314423
+33. bus_stops_distance_0.3 with VIF score of: 10.147806306384904
+34. bike_stations_distance_5 with VIF score of: 9.69052311917597
+35. district_freq_encoded with VIF score of: 33.666136910403104
+36. bike_rides_within_0.3_and_5_min with VIF score of: 9.587864562101212
+37. train_stations_distance_1 with VIF score of: 8.766310881907772
+38. alleylights_distance_0.5 with VIF score of: 7.998069764235276
+39. bike_rides_within_0.1_and_15_min with VIF score of: 7.245083996511972
+40. area_crimes_24_hours_prev with VIF score of: 7.027145024228723
+41. streetlights_oneout_distance_0.5 with VIF score of: 6.817409924736404
+42. district_crimes_6_hours_prev with VIF score of: 6.474777120481591
+43. bike_stations_distance_0.3 with VIF score of: 6.432520022912971
+44. disadvantaged_score with VIF score of: 5.614202115968532
+45. train_stations_distance_5 with VIF score of: 5.169457323253197
+
+Area Selected Features
+
+['day',
+ 'hour',
+ 'year',                                      ## removed during SFS
+ 'month',
+ 'day_of_week',
+ 'area_unemployment',
+ 'area_gov_depend',
+ 'area_crowded_housing',
+ 'area_below_pov',
+ 'district',
+ 'police_stations_distance_0.1',
+ 'police_stations_distance_0.3',              ## removed during SFS
+ 'police_stations_distance_0.5',
+ 'police_stations_distance_1',
+ 'police_stations_distance_3',
+ 'bike_stations_distance_0.1',
+ 'bike_stations_distance_0.3',
+ 'bus_stops_distance_0.1',
+ 'train_stations_distance_0.1',
+ 'train_stations_distance_0.3',
+ 'train_stations_distance_0.5',
+ 'alleylights_distance_0.1',
+ 'alleylights_distance_0.3',
+ 'alleylights_distance_3',
+ 'streetlights_allout_distance_0.1',
+ 'streetlights_allout_distance_0.3',
+ 'streetlights_allout_distance_0.5',
+ 'streetlights_allout_distance_1',
+ 'streetlights_allout_distance_3',
+ 'streetlights_oneout_distance_0.1',
+ 'streetlights_oneout_distance_0.3',
+ 'bike_rides_within_0.1_and_5_min',
+ 'bike_rides_within_0.5_and_5_min',
+ 'hourly_bike_rides',
+ 'district_per_capita_income',
+ 'district_no_hs_dip',
+ 'rides',
+ 'district_crimes_1_hours_prev',
+ 'district_crimes_3_hours_prev',
+ 'area_crimes_1_hours_prev',
+ 'area_crimes_3_hours_prev',
+ 'area_id_target_encoded']
+
+ District Selected Features
+ 
+ ['day',
+ 'hour',
+ 'year',
+ 'month',
+ 'day_of_week',
+ 'area_per_capita_income',
+ 'area_gov_depend',
+ 'area_crowded_housing',
+ 'area_below_pov',
+ 'police_stations_distance_0.1',
+ 'police_stations_distance_0.3',
+ 'police_stations_distance_0.5',              ## removed during SFS
+ 'police_stations_distance_1',                ## removed during SFS
+ 'police_stations_distance_3',
+ 'bike_stations_distance_0.1',                ## removed during SFS
+ 'bus_stops_distance_0.1',
+ 'train_stations_distance_0.1',
+ 'train_stations_distance_0.3',
+ 'alleylights_distance_0.1',                  ## removed during SFS
+ 'alleylights_distance_0.3',
+ 'alleylights_distance_3',
+ 'streetlights_allout_distance_0.1',          ## removed during SFS
+ 'streetlights_allout_distance_0.3',          ## removed during SFS
+ 'streetlights_allout_distance_0.5',          ## removed during SFS
+ 'streetlights_allout_distance_1',
+ 'streetlights_allout_distance_5',
+ 'streetlights_oneout_distance_0.1',
+ 'streetlights_oneout_distance_0.3',
+ 'bike_rides_within_0.1_and_5_min',           ## removed during SFS
+ 'bike_rides_within_0.5_and_5_min',
+ 'hourly_bike_rides',
+ 'district_no_hs_dip',
+ 'rides',
+ 'district_crimes_1_hours_prev',
+ 'district_crimes_3_hours_prev',
+ 'area_crimes_1_hours_prev',                  ## removed during SFS
+ 'area_crimes_3_hours_prev',
+ 'district_target_encoded']

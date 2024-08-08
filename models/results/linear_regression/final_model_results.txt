@@ -1,11 +1,23 @@
-Area Model Performance Metrics:
-Mean Squared Error (MSE): 4.871171080318345e-06
-Root Mean Squared Error (RMSE): 0.002207072966695561
-Mean Absolute Error (MAE): 0.0011713773636931421
-R^2 Score: 0.2061709624032364
+Area Model Performance Metrics (False Crimes):
+Mean Squared Error (MSE): 1.1309023683436607e-05
+Root Mean Squared Error (RMSE): 0.0033628891869100603
+Mean Absolute Error (MAE): 0.0027432354194197347
+R^2 Score: 0.0
 
-District Model Performance Metrics:
-Mean Squared Error (MSE): 1.5032524959151278e-05
-Root Mean Squared Error (RMSE): 0.003877180026662584
-Mean Absolute Error (MAE): 0.0024246040724894974
-R^2 Score: 0.2153026045330554
+Area Model Performance Metrics (True Crimes):
+Mean Squared Error (MSE): 1.8744078688594668e-05
+Root Mean Squared Error (RMSE): 0.004329443230785532
+Mean Absolute Error (MAE): 0.0025648588840468537
+R^2 Score: -0.08047251757649176
+
+District Model Performance Metrics (False Crimes):
+Mean Squared Error (MSE): 1.2640169291736351e-05
+Root Mean Squared Error (RMSE): 0.0035553015753570544
+Mean Absolute Error (MAE): 0.0027885892282962788
+R^2 Score: 0.0
+
+District Model Performance Metrics (True Crimes):
+Mean Squared Error (MSE): 3.148806616350518e-05
+Root Mean Squared Error (RMSE): 0.00561142282879353
+Mean Absolute Error (MAE): 0.003359135944749024
+R^2 Score: -0.11361589249859638
