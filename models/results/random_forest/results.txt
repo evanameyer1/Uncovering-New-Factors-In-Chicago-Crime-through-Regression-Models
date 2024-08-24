@@ -1,0 +1,275 @@
+Area Model Initial Results:
+Mean Absolute Error (MAE): 0.001126
+Mean Squared Error (MSE): 0.000007
+Root Mean Squared Error (RMSE): 0.002639
+Relative Root Mean Squared Error (Relative RMSE): 0.009827
+R-squared (R²): -0.134785
+Adjusted R-squared: -0.134821
+Median Absolute Error: 0.000000
+
+Feature Importances:
+disadvantaged_score - importance: 0.36300960416508804
+police_stations_distance_1 - importance: 0.20834428710489292
+district_unemployment - importance: 0.031158597483484637
+bus_stops_distance_3 - importance: 0.027271041936643814
+police_stations_distance_5 - importance: 0.02271345676453613
+bus_stops_distance_0.1 - importance: 0.022216230459658433
+train_stations_distance_0.5 - importance: 0.0219457573210644
+police_stations_distance_3 - importance: 0.020766934411793222
+streetlights_oneout_distance_0.1 - importance: 0.020485363169512556
+train_stations_distance_0.3 - importance: 0.01829033981217449
+area_id_target_encoded - importance: 0.014766786490578195
+district_per_capita_income - importance: 0.012731927085538528
+bike_stations_distance_0.3 - importance: 0.012246068807592186
+district_crowded_housing - importance: 0.012091174178019276
+train_stations_distance_1 - importance: 0.010889966805889972
+district_below_pov - importance: 0.009028410428907714
+district_gov_depend - importance: 0.008384054437334911
+police_stations_distance_0.5 - importance: 0.00794832249820108
+bike_stations_distance_0.1 - importance: 0.007701991026251392
+train_stations_distance_0.1 - importance: 0.007672236835735713
+alleylights_distance_0.1 - importance: 0.006111426956299433
+bus_stops_distance_1 - importance: 0.004543612196243009
+bus_stops_distance_0.3 - importance: 0.004330982409915926
+train_stations_distance_3 - importance: 0.004198479575689753
+streetlights_allout_distance_5 - importance: 0.00415301754469646
+streetlights_oneout_distance_5 - importance: 0.004136333889579599
+area_unemployment - importance: 0.004054217151594412
+district_no_hs_dip - importance: 0.0038942884422417086
+alleylights_distance_1 - importance: 0.0038379211686371964
+streetlights_allout_distance_3 - importance: 0.003784051966195447
+bike_rides_within_0.3_and_15_min - importance: 0.0037345169020580236
+district_crimes_24_hours_prev - importance: 0.0036958509242420246
+streetlights_allout_distance_0.3 - importance: 0.003559124616248991
+day - importance: 0.0033291175810701208
+area_crimes_24_hours_prev - importance: 0.0032476521700259583
+district_crimes_12_hours_prev - importance: 0.003037048134702837
+district_crimes_1_hours_prev - importance: 0.002984455554077149
+area_crimes_12_hours_prev - importance: 0.0029260165520195477
+bike_stations_distance_0.5 - importance: 0.0029149065695464778
+area_crimes_1_hours_prev - importance: 0.002855847618557808
+area_crowded_housing - importance: 0.002838218550090767
+bike_rides_within_0.5_and_15_min - importance: 0.0028081964074173167
+streetlights_oneout_distance_3 - importance: 0.0026570518070010312
+bike_stations_distance_5 - importance: 0.0024785768589919255
+streetlights_oneout_distance_0.3 - importance: 0.002367706326443916
+district_crimes_6_hours_prev - importance: 0.0021234361364843336
+month - importance: 0.002121447311100039
+district_crimes_3_hours_prev - importance: 0.002061814818803718
+streetlights_allout_distance_0.5 - importance: 0.002036096934009816
+alleylights_distance_3 - importance: 0.0020326654292500573
+bus_stops_distance_5 - importance: 0.0019346857530352932
+bus_stops_distance_0.5 - importance: 0.0019180481231635066
+bike_rides_within_0.3_and_10_min - importance: 0.0019060485179054607
+hour - importance: 0.0018564022435988243
+train_stations_distance_5 - importance: 0.001854144238709412
+streetlights_allout_distance_1 - importance: 0.0018520532030192433
+streetlights_oneout_distance_1 - importance: 0.0018009769200735297
+bike_stations_distance_3 - importance: 0.0017766774076807383
+alleylights_distance_5 - importance: 0.0017123509479949673
+area_crimes_6_hours_prev - importance: 0.001687618656656072
+alleylights_distance_0.3 - importance: 0.0016591706047112292
+area_crimes_3_hours_prev - importance: 0.0016581722569027047
+bike_stations_distance_1 - importance: 0.0015902506096799076
+bike_rides_within_0.5_and_10_min - importance: 0.0015041660475615163
+alleylights_distance_0.5 - importance: 0.0013914600705092581
+streetlights_oneout_distance_0.5 - importance: 0.0013499508319346387
+area_id_freq_encoded - importance: 0.001336672012875518
+area_per_capita_income - importance: 0.0012255601747183386
+bike_rides_within_0.1_and_5_min - importance: 0.0011556717014436825
+bike_rides_within_0.5_and_5_min - importance: 0.0010907579972307116
+streetlights_allout_distance_0.1 - importance: 0.0010305143385505838
+bike_rides_within_0.3_and_5_min - importance: 0.0010291399251571116
+district - importance: 0.0010287929585718377
+police_stations_distance_0.3 - importance: 0.000990133652194953
+area_below_pov - importance: 0.0008933302362284798
+bike_rides_within_0.1_and_15_min - importance: 0.0008486338657450217
+day_of_week - importance: 0.00084810516311487
+bike_rides_within_0.1_and_10_min - importance: 0.0006641298216102423
+area_no_hs_dip - importance: 0.000517443110881555
+rides - importance: 0.0004423703960675893
+year - importance: 0.00031702826926056286
+area_gov_depend - importance: 0.0002985287867439569
+hourly_bike_rides - importance: 0.00019903276357371045
+police_stations_distance_0.1 - importance: 0.00011534866676256914
+
+--------------------------------------------------------------------
+
+District Model Initial Results:
+Mean Absolute Error (MAE): 0.001973
+Mean Squared Error (MSE): 0.000014
+Root Mean Squared Error (RMSE): 0.003790
+Relative Root Mean Squared Error (Relative RMSE): 0.013327
+R-squared (R²): 0.250067
+Adjusted R-squared: 0.249759
+Median Absolute Error: 0.000183
+
+Feature Importances:
+bus_stops_distance_0.1 - importance: 0.2487016463941071
+alleylights_distance_0.1 - importance: 0.24785477395383948
+police_stations_distance_1 - importance: 0.12365737644740826
+streetlights_allout_distance_0.5 - importance: 0.04656472815831097
+bike_rides_within_0.5_and_15_min - importance: 0.03808239802661649
+streetlights_allout_distance_0.3 - importance: 0.03616792394781179
+streetlights_oneout_distance_0.1 - importance: 0.021900004743927618
+train_stations_distance_0.3 - importance: 0.01608375627845661
+bike_stations_distance_0.1 - importance: 0.015539965987505323
+area_no_hs_dip - importance: 0.012319627219276076
+police_stations_distance_0.5 - importance: 0.01139859010563578
+alleylights_distance_0.3 - importance: 0.01058842341274365
+streetlights_allout_distance_3 - importance: 0.00962502807613685
+bike_stations_distance_0.3 - importance: 0.00962283282249712
+streetlights_oneout_distance_0.3 - importance: 0.007535506411037516
+police_stations_distance_3 - importance: 0.007235453340663588
+train_stations_distance_0.1 - importance: 0.006253287406810202
+alleylights_distance_3 - importance: 0.0054517770115517184
+alleylights_distance_5 - importance: 0.004392260928439363
+area_crimes_1_hours_prev - importance: 0.004364612497553978
+area_crimes_3_hours_prev - importance: 0.0039909908768155965
+bus_stops_distance_1 - importance: 0.003984830238510004
+area_crimes_24_hours_prev - importance: 0.00392565652553613
+district_crimes_1_hours_prev - importance: 0.003836595708756802
+streetlights_oneout_distance_3 - importance: 0.0037649857550071026
+district_crimes_24_hours_prev - importance: 0.0034609995230644483
+streetlights_allout_distance_5 - importance: 0.0033078206437972433
+district_target_encoded - importance: 0.0032587493267820706
+day - importance: 0.002977415837106467
+streetlights_allout_distance_1 - importance: 0.002975563735828752
+police_stations_distance_5 - importance: 0.002802814023250474
+streetlights_oneout_distance_0.5 - importance: 0.002756548284864233
+bus_stops_distance_0.3 - importance: 0.002640809656228495
+streetlights_allout_distance_0.1 - importance: 0.0024694102139521824
+train_stations_distance_0.5 - importance: 0.0024351808629367025
+bus_stops_distance_5 - importance: 0.0023805786297801707
+train_stations_distance_1 - importance: 0.002330217605205604
+streetlights_oneout_distance_1 - importance: 0.002287753932966819
+district_crowded_housing - importance: 0.0022818464849179284
+train_stations_distance_3 - importance: 0.002258855542388535
+hour - importance: 0.0022307989411180923
+district_per_capita_income - importance: 0.0021691881656946215
+streetlights_oneout_distance_5 - importance: 0.0021120601285116937
+area_crowded_housing - importance: 0.002097185926127149
+train_stations_distance_5 - importance: 0.0019984585497243913
+bike_stations_distance_3 - importance: 0.0019488573542588122
+district_below_pov - importance: 0.001844625636573582
+bike_rides_within_0.3_and_15_min - importance: 0.001777727269658248
+district_crimes_12_hours_prev - importance: 0.0017444668926734155
+bus_stops_distance_0.5 - importance: 0.0017425060744141409
+area_crimes_6_hours_prev - importance: 0.0017034580262022655
+bus_stops_distance_3 - importance: 0.0016774454653084743
+alleylights_distance_0.5 - importance: 0.0016555761087574314
+district_crimes_3_hours_prev - importance: 0.001603605461959214
+alleylights_distance_1 - importance: 0.0016035885221027245
+district_unemployment - importance: 0.001601874299896622
+bike_stations_distance_1 - importance: 0.0015886677357456573
+bike_stations_distance_0.5 - importance: 0.0015828872587624057
+district_crimes_6_hours_prev - importance: 0.0015640607735573622
+day_of_week - importance: 0.0014569003352187491
+area_crimes_12_hours_prev - importance: 0.001396609277884296
+bike_rides_within_0.5_and_10_min - importance: 0.0013164821323926274
+bike_rides_within_0.3_and_5_min - importance: 0.0012734210031799303
+month - importance: 0.0012571751235469443
+bike_stations_distance_5 - importance: 0.0012308310449391769
+district_gov_depend - importance: 0.0011976005159436017
+police_stations_distance_0.3 - importance: 0.0011509384540629116
+area_below_pov - importance: 0.0011488026688782453
+bike_rides_within_0.1_and_5_min - importance: 0.0010698246774895489
+district_no_hs_dip - importance: 0.0010570727315383564
+year - importance: 0.001035456746024625
+bike_rides_within_0.5_and_5_min - importance: 0.0010301621372005491
+disadvantaged_score - importance: 0.0009348409819684393
+area_unemployment - importance: 0.0009264852738103309
+area_gov_depend - importance: 0.0008804525802607983
+area_per_capita_income - importance: 0.0008650422318138802
+bike_rides_within_0.3_and_10_min - importance: 0.0008011417730515699
+bike_rides_within_0.1_and_10_min - importance: 0.0006829727622888248
+bike_rides_within_0.1_and_15_min - importance: 0.0006796436122633658
+rides - importance: 0.0003611014616376427
+police_stations_distance_0.1 - importance: 0.0002879640127970875
+hourly_bike_rides - importance: 0.0002444432927370922
+district_freq_encoded - importance: 0.0
+
+Feature Selection:
+district_top_features = [
+    'bus_stops_distance_0.1',
+    'alleylights_distance_0.1',
+    'police_stations_distance_1',
+    'streetlights_allout_distance_0.5',
+    'bike_rides_within_0.5_and_15_min',
+    'streetlights_allout_distance_0.3',
+    'streetlights_oneout_distance_0.1',
+    'train_stations_distance_0.3'
+]
+
+After Feature Selection:
+Mean Absolute Error (MAE): 0.000282
+Mean Squared Error (MSE): 0.000002
+Root Mean Squared Error (RMSE): 0.001507
+Relative Root Mean Squared Error (Relative RMSE): 0.005300
+R-squared (R²): 0.881400
+Adjusted R-squared: 0.881396
+Median Absolute Error: 0.000045
+
+Final Results for the District Model
+
+- Best Parameters for District Model: {'max_depth': None, 'max_features': 6, 'max_leaf_nodes': None, 'max_samples': None, 'min_samples_leaf': 1, 'min_samples_split': 20, 'n_estimators': 100}
+
+- Feature Importances:
+bus_stops_distance_0.1: 0.23702343278860458
+alleylights_distance_0.1: 0.18985335035294687
+police_stations_distance_1: 0.16947511492857767
+streetlights_allout_distance_0.5: 0.16469587168939454
+bike_rides_within_0.5_and_15_min: 0.05115912059153898
+streetlights_allout_distance_0.3: 0.0836592179994653
+streetlights_oneout_distance_0.1: 0.06680886756646598
+train_stations_distance_0.3: 0.03732502408300607
+
+- Model Performance
+Mean Absolute Error (MAE): 0.000305
+Mean Squared Error (MSE): 0.000002
+Root Mean Squared Error (RMSE): 0.001461
+Relative Root Mean Squared Error (Relative RMSE): 0.005135
+R-squared (R²): 0.888652
+Adjusted R-squared: 0.888648
+Median Absolute Error: 0.000045
+
+- Non-Zero Performance
+Mean Absolute Error (MAE): 0.000558
+Mean Squared Error (MSE): 0.000007
+Root Mean Squared Error (RMSE): 0.002699
+Relative Root Mean Squared Error (Relative RMSE): 0.009490
+R-squared (R²): 0.742392
+Adjusted R-squared: 0.742354
+Median Absolute Error: 0.000091
+
+- With XGBoost Features
+bus_stops_distance_0.1: 0.15915389594838536
+alleylights_distance_0.1: 0.10506152114631055
+police_stations_distance_1: 0.21378639260890048
+streetlights_oneout_distance_0.1: 0.08291383893603421
+streetlights_allout_distance_0.5: 0.0891355804751959
+streetlights_oneout_distance_0.3: 0.10554571598459919
+streetlights_allout_distance_0.3: 0.07924055171042402
+bike_rides_within_0.5_and_15_min: 0.04940056603981739
+area_crimes_3_hours_prev: 0.024162640636339272
+area_crimes_1_hours_prev: 0.01587149451186055
+alleylights_distance_0.3: 0.05327894791900439
+bike_rides_within_0.1_and_10_min: 0.004808652296440233
+bike_rides_within_0.1_and_5_min: 0.017640201786688264
+
+Mean Absolute Error (MAE): 0.000297
+Mean Squared Error (MSE): 0.000002
+Root Mean Squared Error (RMSE): 0.001406
+Relative Root Mean Squared Error (Relative RMSE): 0.004944
+R-squared (R²): 0.896802
+Adjusted R-squared: 0.896796
+Median Absolute Error: 0.000041
+
+- Non-Zero Performance
+Mean Absolute Error (MAE): 0.000625
+Mean Squared Error (MSE): 0.000007
+Root Mean Squared Error (RMSE): 0.002604
+Relative Root Mean Squared Error (Relative RMSE): 0.009156
+R-squared (R²): 0.760170
+Adjusted R-squared: 0.760113
+Median Absolute Error: 0.000176
