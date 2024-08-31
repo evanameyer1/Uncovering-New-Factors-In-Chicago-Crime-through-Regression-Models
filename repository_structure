@@ -1,4 +1,4 @@
-Chicago-Crime-Forecasting/
+Chicago-Crime/
 │
 ├── README.md               # Project overview and setup instructions
 ├── LICENSE                 # Repository license
@@ -14,7 +14,11 @@ Chicago-Crime-Forecasting/
 │   │   ├── 02_geospatial_analysis.ipynb         # Mapping and analyzing geospatial data for district correlation
 │   │   ├── 03_proximity_analysis.ipynb          # Calculating proximity metrics for objects within specified distances
 │   │   ├── 04_feature_engineering.ipynb         # Enhancing the feature set with lag, lead, and aggregate variables
-│   │   ├── 05_feature_selection.ipynb           # Applying feature selection techniques for optimal model input
+│   │   ├── 05_representative_samples.ipynb      # Generating representative samples for model training
+│   │   ├── 06_linear_regression.ipynb           # Implementing and analyzing linear regression models
+│   │   ├── 07_random_forest.ipynb               # Implementing and analyzing random forest models
+│   │   ├── 08_xgboost.ipynb                     # Implementing and analyzing XGBoost models
+│   │   └── 09_factor_analysis.ipynb             # Conducting factor analysis for dimensionality reduction
 │   │
 │   ├── src/                # Source code for models and utilities
 │   │   ├── data/           # Scripts to download or generate data
@@ -22,19 +26,22 @@ Chicago-Crime-Forecasting/
 │   │   │   ├── 02_geospatial_analysis.py
 │   │   │   ├── 03_proximity_analysis.py
 │   │   │   ├── 04_feature_engineering.py
-│   │   │   └── 05_feature_selection.py
+│   │   │   ├── 05_representative_samples.py
+│   │   │   ├── 06_linear_regression.py
+│   │   │   ├── 07_random_forest.py
+│   │   │   ├── 08_xgboost.py
+│   │   │   └── 09_factor_analysis.py
 │   │   │
 │   │   └── models/         # Model scripts
 │   │       ├── linear_regression.py
 │   │       ├── random_forest.py
-│   │       ├── arima.py
-│   │       ├── var.py
-│   │       ├── transformer_model.py
-│   │       └── custom_lstm_model.py
+│   │       ├── xgboost.py
+│   │       └── factor_analysis.py
 │   │
 │   ├── results/            # Generated analysis results, models, figures, etc.
-│   │   ├── figures/        # Generated graphics and figures for documentation
-│   │   └── models/         # Trained model files
+│   │   ├── linear_regression/    # Results from linear regression model
+│   │   ├── random_forest/        # Results from random forest model
+│   │   └── xgboost/              # Results from XGBoost model
 │   │
 │   └── tests/              # Test cases for your scripts
 │       ├── test_preprocess.py
@@ -42,5 +49,5 @@ Chicago-Crime-Forecasting/
 │
 └── data/                   # Data used in the project (not tracked in Git)
     ├── raw/                # Raw data, not modified
-    ├── pre_training/       # Feature datasets       
-    └── processed/          # Cleaned and pre-processed data
+    ├── processed/          # Cleaned and pre-processed data
+    └── pre-training/	    # Data post feature engineering and feature selection
