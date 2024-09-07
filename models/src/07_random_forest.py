@@ -6,6 +6,8 @@ from sklearn.model_selection import GridSearchCV
 from matplotlib import pyplot as plt
 from sklearn.inspection import PartialDependenceDisplay
 import seaborn as sns
+import pickle
+from typing import Tuple, Optional
 import matplotlib.gridspec as gridspec
 
 # Load datasets
@@ -427,30 +429,156 @@ plt.show()
 
 evaluate(final_district_model, district_feature_testing_selected_data, district_target_testing_data, 'District', 'final_district_residuals')
 
-# Combine test data and predictions for further analysis
-district_df_combined = pd.concat([district_feature_testing_selected_data, pd.DataFrame(district_target_testing_data, columns=['target']), pd.DataFrame(final_district_model.predict(district_feature_testing_selected_data), columns=['predicted'])], axis=1)
+# Save model as a pickle file to be easily read in and utilized later
+with open('models/final_district_rf_model.pkl', 'wb') as file:
+    pickle.dump(final_district_model, file)
 
+# Evaluate model performance by comparing accuracies over a range of thresholds
+def plot_accuracy_vs_threshold(
+    district_df: pd.DataFrame, 
+    predicted_column: str = 'predicted', 
+    target_column: str = 'target', 
+    threshold_range: Tuple[float, float] = (0.1, 3), 
+    threshold_step: float = 0.1, 
+    save_path: Optional[str] = None
+) -> None:
+    """
+    Function to plot accuracy vs threshold percentage for a given dataframe.
+
+    Parameters:
+    - district_df: DataFrame containing the predicted and target columns.
+    - predicted_column: Name of the column containing the predicted values (default: 'predicted').
+    - target_column: Name of the column containing the target values (default: 'target').
+    - threshold_range: Tuple containing the start and end of threshold percentage range (default: (0.1, 3)).
+    - threshold_step: Step size for iterating through threshold percentages (default: 0.1).
+    - save_path: Path to save the plot as an image (default: None, doesn't save if not provided).
+
+    Returns:
+    - None (displays the plot and saves it if save_path is provided)
+    """
+    accuracies = []
+
+    # Calculate the maximum predicted value for threshold scaling
+    max_predicted_value = np.max(np.abs(district_df[predicted_column]))
+    
+    # Iterate through the range of threshold percentages
+    for threshold_percentage in np.arange(threshold_range[0], threshold_range[1], threshold_step):
+        threshold_value = (threshold_percentage / 100) * max_predicted_value
+
+        # Count correct predictions within the threshold
+        correct_predictions = np.sum(np.abs(district_df[predicted_column] - district_df[target_column]) <= threshold_value)
+        total_predictions = len(district_df)
+
+        # Calculate accuracy
+        accuracy = correct_predictions / total_predictions
+        accuracies.append(accuracy)
+
+    # Plot the accuracy vs threshold percentage
+    plt.figure(figsize=(8, 6))
+    plt.plot(np.arange(threshold_range[0], threshold_range[1], threshold_step), [accuracy * 100 for accuracy in accuracies], marker='o')
+    plt.title('Accuracy vs Threshold Percentage')
+    plt.xlabel('Threshold Percentage (%)')
+    plt.ylabel('Accuracy (%)')
+    plt.grid(True)
+
+    # Save the plot if save_path is provided
+    if save_path:
+        plt.savefig(save_path)
+    
+    # Show the plot
+    plt.show()
+
+district_df_combined = pd.concat([district_feature_testing_selected_data, pd.DataFrame(district_target_testing_data, columns=['target']), pd.DataFrame(final_district_model.predict(district_feature_testing_selected_data), columns=['predicted'])], axis=1)
+plot_accuracy_vs_threshold(district_df_combined, threshold_step=0.05, save_path='../results/random_forest/final_district_model_accuracy_by_threshold.png')
+
+# Testing results with top features selected by the XGBoost model (same process as main model above)
+xgboost_features = ['bus_stops_distance_0.1', 'alleylights_distance_0.1', 'police_stations_distance_1', 
+                    'streetlights_oneout_distance_0.1', 'streetlights_allout_distance_0.5', 'streetlights_oneout_distance_0.3', 
+                    'streetlights_allout_distance_0.3', 'bike_rides_within_0.5_and_15_min', 'area_crimes_3_hours_prev', 'area_crimes_1_hours_prev', 
+                    'alleylights_distance_0.3', 'bike_rides_within_0.1_and_10_min', 'bike_rides_within_0.1_and_5_min']
+
+district_feature_training_selected_data_xgboost_features = district_feature_training_sample[xgboost_features]
+district_feature_testing_selected_data_xgboost_features = district_feature_testing_data[xgboost_features]
+
+final_district_model_xgboost_features = RandomForestRegressor()
+final_district_model_xgboost_features.set_params(n_jobs=15)
+final_district_model_xgboost_features.set_params(verbose=1)
+final_district_model_xgboost_features.fit(district_feature_training_selected_data_xgboost_features, district_target_training_sample)
+
+for i, feature in enumerate(xgboost_features):
+    print(f'{feature}: {final_district_model_xgboost_features.feature_importances_[i]}')
+
+evaluate(final_district_model_xgboost_features, district_feature_testing_selected_data_xgboost_features, district_target_testing_data, 'District', 'final_district_residuals_xgboost_features')
+
+final_district_importances_xgboost_features = final_district_model_xgboost_features.feature_importances_
+final_district_feature_names_xgboost_features = xgboost_features
+
+final_district_feature_importance_df_xgboost_features = pd.DataFrame({'feature':final_district_feature_names_xgboost_features, 'importance':final_district_importances_xgboost_features})
+final_district_feature_importance_df_xgboost_features.sort_values(by='importance', ascending=False, inplace=True)
+
+plt.figure(figsize=(10, 6))
+plt.barh(final_district_feature_importance_df_xgboost_features['feature'], final_district_feature_importance_df_xgboost_features['importance'], color='b')
+plt.xlabel('Importance')
+plt.ylabel('Feature')
+plt.title('Feature Importances from Random Forest Model - XGBoost Features')
+plt.gca().invert_yaxis()
+plt.tight_layout()
+plt.savefig('../results/random_forest/final_district_model_feature_importances_xgboost_features.png')
+plt.show()
+
+district_df_combined_xgboost_features = pd.concat([district_feature_testing_selected_data_xgboost_features, pd.DataFrame(district_target_testing_data, columns=['target']), pd.DataFrame(final_district_model_xgboost_features.predict(district_feature_testing_selected_data_xgboost_features), columns=['predicted'])], axis=1)
+plot_accuracy_vs_threshold(district_df_combined_xgboost_features, threshold_step=0.05, save_path='../results/random_forest/final_district_model_accuracy_by_threshold_xgboost_features.png')
+
+# Evaluate the accuracy of the model for predicting instances where crimes are present
 district_no_zeros = district_df_combined[district_df_combined['target'] > 0]
 district_no_zeros_model = Evaluator(final_district_model, district_no_zeros.drop(['target', 'predicted'], axis=1), district_no_zeros['predicted'])
 district_no_zeros_model.set_residuals(district_no_zeros['predicted'] - district_no_zeros['target'])
 
-evaluate(final_district_model, district_no_zeros.drop(['target', 'predicted'], axis=1), district_no_zeros['target'], 'District', 'final_district_no_zero_residuals')
+evaluate(final_district_model, district_no_zeros.drop(['target', 'predicted'], axis=1), district_no_zeros['target'], 'District', 'final_district_no_zeros_residuals')
+plot_accuracy_vs_threshold(district_no_zeros, threshold_step=0.05, save_path='../results/random_forest/final_district_model_accuracy_by_threshold_no_zeros.png')
+
+# Evaluate the accuracy of the model for predicting instances where crimes are not present
+district_zeros = district_df_combined[district_df_combined['target'] == 0]
+
+relative_error = np.mean(np.abs(district_zeros['predicted'] - district_zeros['target']) / np.max(district_zeros['predicted']))
+accuracy = 1 - relative_error
+
+plot_accuracy_vs_threshold(district_zeros, threshold_range=(0.5, 5), threshold_step=0.1, save_path='../results/random_forest/final_district_model_accuracy_by_threshold_zeros.png')
+
+# Testing the accuracy of crimes and no crimes seperately again but this time for the model trained on XGBoost features (same process as above)
+# Crimes
+district_no_zeros_xgboost_features = district_df_combined_xgboost_features[district_df_combined_xgboost_features['target'] > 0]
+district_no_zeros_model_xgboost_features = Evaluator(final_district_model_xgboost_features, district_no_zeros_xgboost_features.drop(['target', 'predicted'], axis=1), district_no_zeros_xgboost_features['predicted'])
+district_no_zeros_model_xgboost_features.set_residuals(district_no_zeros_xgboost_features['predicted'] - district_no_zeros_xgboost_features['target'])
+
+evaluate(final_district_model_xgboost_features, district_no_zeros_xgboost_features.drop(['target', 'predicted'], axis=1), district_no_zeros_xgboost_features['target'], 'District', 'final_district_no_zeros_residuals_xgboost_features')
+plot_accuracy_vs_threshold(district_no_zeros_xgboost_features, threshold_step=0.05, save_path='../results/random_forest/final_district_model_accuracy_by_threshold_no_zeros_xgboost_features.png')
+
+# No Crimes
+district_zeros_xgboost_features = district_df_combined_xgboost_features[district_df_combined_xgboost_features['target'] == 0]
+relative_error_xgboost_features = np.mean(np.abs(district_zeros_xgboost_features['predicted'] - district_zeros_xgboost_features['target']) / np.max(district_zeros_xgboost_features['predicted']))
+
+accuracy_xgboost_features = 1 - relative_error_xgboost_features
+accuracy_xgboost_features
+
+plot_accuracy_vs_threshold(district_zeros_xgboost_features, threshold_step=0.05, save_path='../results/random_forest/final_district_model_accuracy_by_threshold_zeros_xgboost_features.png')
 
 # Evaluate feature importances using permutation importance
 from sklearn.inspection import permutation_importance
 
-district_perm_result = permutation_importance(final_district_model, district_feature_training_selected_data, district_target_training_sample, n_repeats=10, random_state=42)
+# Calculate the permutation importance of each feature
+district_perm_result = permutation_importance(final_district_model_xgboost_features, district_feature_training_selected_data_xgboost_features, district_target_training_sample, n_repeats=10, random_state=42)
 
-# Print the permutation importance scores
+# Print the feature importance scores
 for i in range(len(district_perm_result.importances_mean)):
     print(f"Feature {i}: {district_perm_result.importances_mean[i]}")
 
 district_perm_importance_df = pd.DataFrame({
-    'Feature': district_feature_training_selected_data.columns,
+    'Feature': district_feature_training_selected_data_xgboost_features.columns,
     'Importance': district_perm_result.importances_mean
 })
 
-district_perm_importance_df.sort_values(by='Importance', ascending=False, inplace=True)
+district_perm_importance_df = district_perm_importance_df.sort_values(by='Importance', ascending=False)
 
 # Plot permutation importance
 plt.figure(figsize=(8, 4))
@@ -460,19 +588,15 @@ plt.ylabel('Feature')
 plt.title('Permutation Importance of District Features')
 plt.tight_layout()
 plt.gca().invert_yaxis()
-plt.savefig('../results/random_forest/district_permutation_importance_results.png')
+plt.savefig('../results/random_forest/district_permutation_importance_results_xgboost_features.png')
 plt.show()
 
-district_top_15_features = district_perm_importance_df.head(15)['Feature'].tolist()
-print("Top 15 features:", district_top_15_features)
-
-# Generate partial dependence plots for top 15 features
 fig, ax = plt.subplots(figsize=(20, 15))
-PartialDependenceDisplay.from_estimator(final_district_model, district_feature_training_selected_data, features=district_top_15_features, ax=ax, n_jobs=12, grid_resolution=50, percentiles=(0, 1))
+PartialDependenceDisplay.from_estimator(final_district_model_xgboost_features, district_feature_training_selected_data_xgboost_features, features=district_feature_training_selected_data_xgboost_features.columns, ax=ax, n_jobs=12, grid_resolution=50, percentiles=(0,1))
 
 fig.suptitle('District Partial Dependency Plots', fontsize=20)
 plt.tight_layout(rect=[0, 0, 1, 0.98])
-plt.savefig('../results/random_forest/district_partial_dependence.png')
+plt.savefig('../results/random_forest/district_partial_dependence_xgboost_features.png')
 plt.show()
 
 def feature_ablation(model: RandomForestRegressor, training_sample: tuple, test_data: tuple) -> list:
@@ -523,8 +647,8 @@ def calculate_differences(original_accs: dict, ablation_accs: list) -> dict:
 
 # Perform feature ablation on the District model
 district_temp_model = RandomForestRegressor()
-district_temp_model.set_params(**final_district_model.get_params())
-district_feature_ablation_accs = feature_ablation(district_temp_model, (district_feature_training_selected_data, district_target_training_sample), (district_feature_testing_selected_data, district_target_testing_data))
+district_temp_model.set_params(**final_district_model_xgboost_features.get_params())
+district_feature_ablation_accs = feature_ablation(district_temp_model, (district_feature_training_selected_data_xgboost_features, district_target_training_sample), (district_feature_testing_selected_data_xgboost_features, district_target_testing_data))
 
 district_evaluator = Evaluator(final_district_model, district_feature_testing_selected_data, district_target_testing_data)
 district_evaluator.gather_predictions()
@@ -543,7 +667,7 @@ df = pd.DataFrame(rows)
 df.set_index('Feature', inplace=True)
 
 # Prepare a figure with a grid of subplots
-fig = plt.figure(constrained_layout=True, figsize=(8, 4))
+fig = plt.figure(constrained_layout=True, figsize=(8, 6))
 spec = gridspec.GridSpec(ncols=len(df.columns), nrows=1, figure=fig)
 
 # Plot each column in a separate subplot
@@ -557,5 +681,5 @@ for i, column in enumerate(df.columns):
         ax.set_yticklabels([])
 
 plt.suptitle('District Feature Ablation Differences', fontsize=15)
-plt.savefig('../results/random_forest/district_feature_ablation.png')
+plt.savefig('../results/random_forest/district_feature_ablation_xgboost_features.png')
 plt.show()
