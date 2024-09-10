@@ -132,21 +132,29 @@ This project utilizes a variety of datasets related to Chicago's infrastructure 
 - Conducts factor analysis to uncover underlying factors in crime data.
 - Visualizes these factors and their relationships with crime in different districts using Plotly.
 
+#### 10. 10_simulation.py
+**Topic**: Simulation Analysis
+
+- Simulates different scenarios by adjusting factors like bike activity, alleylight and streetlight outages, and recent crime activity.
+- Uses XGBoost models to predict crime levels based on the simulations.
+- Calculates residuals and compares the impact of simulations across different geographical areas, visualizing the results using heatmaps.
+
 ## Requirements
 
-The project relies on several Python packages. Below is the complete list of dependencies required to run the scripts and notebooks:
+The project relies on a lot of Python packages. Below is the list of the primary dependencies used, but be sure to see `requirements.txt` for the complete package list:
 
 ```plaintext
-pandas==1.5.3
-numpy==1.24.2
-scikit-learn==1.2.2
-xgboost==1.7.5
-plotly==5.15.0
-matplotlib==3.7.1
-seaborn==0.12.2
-statsmodels==0.14.0
-factor_analyzer==0.4.4
-jupyter==1.0.0
+pandas==2.2.2
+numpy==2.0.1
+scikit-learn==1.5.1
+xgboost==2.1.0
+matplotlib==3.9.2
+seaborn==0.13.2
+statsmodels==0.14.2
+scipy==1.14.0
+folium==0.17.0
+geopandas==1.0.1
+shapely==2.0.5
 ```
 
 *Note: Ensure that you have these versions installed to avoid compatibility issues.*
@@ -166,7 +174,7 @@ Clone the repository and install the necessary packages:
 ```bash
 git clone https://github.com/evanameyer1/Custom-LSTM-Model.git
 cd Custom-LSTM-Model
-pip install -r requirements.txt
+pip install -r models/notebooks/requirements.txt
 ```
 
 ## Usage
