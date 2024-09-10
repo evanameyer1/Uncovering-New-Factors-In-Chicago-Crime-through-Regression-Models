@@ -34,7 +34,8 @@ Custom-LSTM-Model/
 ├── data/                   # Data used in the project (not tracked in Git)
 │   ├── raw/                # Raw data, not modified
 │   ├── processed/          # Cleaned and pre-processed data
-│   └── pre-training/      # Data post feature engineering and feature selection
+|   ├── simulations/        # Results of model-led simulations
+│   └── pre-training/       # Data post feature engineering and feature selection
 │
 ├── requirements.txt        # Python package dependencies
 │
