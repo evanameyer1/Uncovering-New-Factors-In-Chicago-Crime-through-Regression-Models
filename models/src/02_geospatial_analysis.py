@@ -1,233 +1,235 @@
 import pandas as pd
-import numpy as np
-from typing import List
-from sklearn.preprocessing import MinMaxScaler
+import os
+from shapely.geometry import Point, Polygon
+from shapely import geometry
+import ast
 
-# Load pre-feature selection data
-def load_pre_feature_selection_data() -> dict:
-    """
-    Load pre-feature selection datasets for both area and district data.
+directory = '../../data/processed'
+void = ['clean_areas.csv', 'clean_disadvantaged_areas.csv', 'clean_police_districts.csv', 
+        'clean_public_healthindicator.csv', 'clean_train_ridership.csv', 'clean_bike_trips.csv']
 
-    Returns:
-        dict: A dictionary containing DataFrames for area and district pre-feature selection data.
+# Function to read in all CSV files in the directory, except for those in the void list
+def read_in(directory: str, void: list[str]) -> dict[str, pd.DataFrame]:
     """
-    return {
-        "area_pre_feature_selection": pd.read_csv('../../data/pre_training/area_pre_feature_selection.csv'),
-        "district_pre_feature_selection": pd.read_csv('../../data/pre_training/district_pre_feature_selection.csv')
-    }
-
-# Split dataset into training and testing sets
-def split_train_test(features: pd.DataFrame, target: pd.DataFrame, year: int) -> dict:
-    """
-    Split the features and target data into training and testing sets based on the specified year.
+    Reads in CSV files from the specified directory, except for the files in the void list.
 
     Args:
-        features (pd.DataFrame): DataFrame containing the features.
-        target (pd.DataFrame): DataFrame containing the target variable.
-        year (int): Year used to split the data into training (before the year) and testing (equal to the year).
+        directory (str): The path to the directory containing the CSV files.
+        void (list): A list of file names to exclude from reading.
 
     Returns:
-        dict: A dictionary containing training and testing sets for features and target variables.
+        dict: A dictionary containing DataFrames with keys as file names (without .csv extension).
     """
-    return {
-        "train_features": features[features['year'] < year].reset_index(drop=True),
-        "test_features": features[features['year'] == year].reset_index(drop=True),
-        "train_target": target[target['year'] < year].reset_index(drop=True).drop('year', axis=1),
-        "test_target": target[target['year'] == year].reset_index(drop=True).drop('year', axis=1)
-    }
+    data = {}
+    for filename in os.listdir(directory):
+        if filename not in void and filename.endswith('.csv'):
+            file_path = os.path.join(directory, filename)
+            data[filename[:-4]] = pd.read_csv(file_path)
+            print(f'{filename[:-4]} successfully read in')
+    return data
 
-# Target and frequency encoding for categorical columns
-def target_and_frequency_encoding(training_data: pd.DataFrame, testing_data: pd.DataFrame, group_col: str, target_col: str) -> tuple:
+data = read_in(directory, void)
+clean_police_districts = pd.read_csv('../../data/processed/clean_police_districts.csv')
+clean_areas = pd.read_csv('../../data/processed/clean_areas.csv')
+clean_disadvantaged_areas = pd.read_csv('../../data/processed/clean_disadvantaged_areas.csv')
+
+#### Data Cleaning of Geom Types
+# Function to parse polygon strings from the 'geom' column of CSV files
+def parse_polygon1(polygon_string: str) -> Polygon:
     """
-    Perform target encoding and frequency encoding on a specified categorical column.
+    Parses a polygon string in the format 'POLYGON (...)' into a Shapely Polygon object.
 
     Args:
-        training_data (pd.DataFrame): Training data DataFrame.
-        testing_data (pd.DataFrame): Testing data DataFrame.
-        group_col (str): Categorical column to be encoded.
-        target_col (str): Target column used for target encoding.
+        polygon_string (str): A string representation of a polygon.
 
     Returns:
-        tuple: Tuple containing the modified training and testing DataFrames with encoded columns.
+        Polygon: A Shapely Polygon object.
     """
-    means = training_data.groupby(group_col)[target_col].mean()
-    freq = training_data[group_col].value_counts() / len(training_data)
-    
-    training_data[f'{group_col}_target_encoded'] = training_data[group_col].map(means)
-    testing_data[f'{group_col}_target_encoded'] = testing_data[group_col].map(means)
-    
-    training_data[f'{group_col}_freq_encoded'] = training_data[group_col].map(freq)
-    testing_data[f'{group_col}_freq_encoded'] = testing_data[group_col].map(freq)
-    
-    return training_data, testing_data
+    points = polygon_string.strip('POLYGON ((').strip('))').split(', ')
+    points = [tuple(map(float, point.split())) for point in points]
+    return Polygon(points)
 
-# Patch datatypes to optimize memory usage
-def patch_datatypes(df: pd.DataFrame) -> pd.DataFrame:
+# Function to parse polygon strings that are lists of tuples
+def parse_polygon2(polygon_string: str) -> Polygon:
     """
-    Optimize memory usage by converting column data types.
+    Parses a polygon string that is a list of tuples (from JSON format) into a Shapely Polygon object.
 
     Args:
-        df (pd.DataFrame): DataFrame to optimize.
+        polygon_string (str): A string representation of a polygon (list of tuples).
 
     Returns:
-        pd.DataFrame: Optimized DataFrame with reduced memory usage.
+        Polygon: A Shapely Polygon object.
     """
-    float_cols = df.select_dtypes(include=['float64']).columns
-    df[float_cols] = df[float_cols].astype(np.float32)
+    points = ast.literal_eval(polygon_string)
+    return Polygon(points)
 
-    int_cols = df.select_dtypes(include=['int64']).columns
-    df[int_cols] = df[int_cols].astype(np.int32)
-    
+# Function to swap coordinates of a polygon
+def swap_coordinates(polygon: Polygon) -> Polygon:
+    """
+    Swaps the coordinates of a polygon (lat, long -> long, lat).
+
+    Args:
+        polygon (Polygon): A Shapely Polygon object.
+
+    Returns:
+        Polygon: A Shapely Polygon object with swapped coordinates.
+    """
+    if polygon.is_empty:
+        return polygon
+    swapped_coords = [(y, x) for x, y in polygon.exterior.coords]
+    return Polygon(swapped_coords)
+
+# Apply functions to clean up and swap coordinates for police districts and areas
+clean_police_districts['geom'] = clean_police_districts['geom'].apply(parse_polygon1)
+clean_areas['poly'] = clean_areas['poly'].apply(parse_polygon2)
+clean_disadvantaged_areas['poly'] = clean_disadvantaged_areas['poly'].apply(parse_polygon1)
+clean_disadvantaged_areas['poly'] = clean_disadvantaged_areas['poly'].apply(swap_coordinates)
+
+# Adding centroids to the areas and disadvantaged areas DataFrame
+clean_areas['centroid'] = clean_areas['poly'].apply(lambda poly: poly.centroid)
+clean_disadvantaged_areas['centroid'] = clean_disadvantaged_areas['poly'].apply(lambda poly: poly.centroid)
+
+#### Assigning Districts to Each Dataset
+# Function to determine which police district each point belongs to
+def determine_within(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Assigns a police district to each row in the DataFrame based on its centroid or coordinates.
+
+    Args:
+        df (pd.DataFrame): A DataFrame containing points with centroids or lat/long.
+
+    Returns:
+        pd.DataFrame: The DataFrame with assigned districts, filtering out points that don't belong to any district.
+    """
+    statuses = []
+    districts = []
+    cent = 'centroid' in df.columns  # Check if the DataFrame has centroid column
+
+    for i in range(len(df)):
+        point = df.loc[i, 'centroid'] if cent else geometry.Point(df.loc[i, 'long'], df.loc[i, 'lat'])
+        status = 0
+
+        # Check if point lies within a police district polygon
+        for index, row in clean_police_districts.iterrows():
+            district = row['district']
+            geom = row['geom']
+            if geom.contains(point): 
+                status = 1
+                break
+        statuses.append(status)
+        districts.append(district)
+
+    df['status'] = statuses
+    df['district'] = districts
+    df = df[df['status'] == 1].drop('status', axis=1)
+
+    if cent: 
+        df.drop('centroid', axis=1, inplace=True)
+
     return df
 
-# Combine features and targets
-def combine_features_targets(features: pd.DataFrame, target: pd.DataFrame, target_col: str) -> pd.DataFrame:
+# Function to assign districts to multiple DataFrames
+def determine_districts(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
     """
-    Combine features and target columns into a single DataFrame.
+    Applies the determine_within function to all DataFrames in the provided dictionary.
 
     Args:
-        features (pd.DataFrame): DataFrame containing features.
-        target (pd.DataFrame): DataFrame containing the target variable.
-        target_col (str): Name of the target column to be used in the combined DataFrame.
+        data (dict): A dictionary containing DataFrames.
 
     Returns:
-        pd.DataFrame: Combined DataFrame with a new column 'crime_status' indicating whether the target variable is greater than 0.
+        dict: Updated dictionary with districts assigned to each DataFrame.
     """
-    combined_df = pd.concat([features, target], axis=1)
-    combined_df['crime_status'] = combined_df[target_col] > 0
-    return combined_df
+    for df_name, df in data.items():
+        data[df_name] = determine_within(df)
+        print(f'{df_name} successfully completed')
+    return data
 
-# Apply Sturges' formula to determine the number of bins
-def sturges_formula(n: int) -> int:
+clean_disadvantaged_areas = determine_within(clean_disadvantaged_areas)
+clean_areas = determine_within(clean_areas)
+
+#### Assigning Areas Stats to Each Crime
+# Function to assign an area to each crime based on centroid or coordinates
+def determine_area_for_crimes(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Determine the number of bins using Sturges' formula.
+    Assigns an area to each crime entry based on its centroid or coordinates.
 
     Args:
-        n (int): Number of observations.
+        df (pd.DataFrame): A DataFrame containing crime data with centroids or lat/long.
 
     Returns:
-        int: Number of bins calculated using Sturges' formula.
+        pd.DataFrame: The DataFrame with assigned areas, filtering out points that don't belong to any area.
     """
-    return int(np.ceil(np.log2(n) + 1))
+    statuses = []
+    areas = []
+    cent = 'centroid' in df.columns  # Check if the DataFrame has centroid column
 
-# Bin the DataFrame based on the number of bins
-def bin_dataframe(df: pd.DataFrame, exempt: List[str], bins: int) -> pd.DataFrame:
+    for i in range(len(df)):
+        point = df.loc[i, 'centroid'] if cent else geometry.Point(df.loc[i, 'long'], df.loc[i, 'lat'])
+        status = 0
+
+        # Check if point lies within a given area polygon
+        for index, row in clean_areas.iterrows():
+            area = row['id']
+            geom = row['poly']
+            if geom.contains(point): 
+                status = 1
+                break
+        statuses.append(status)
+        areas.append(area)
+
+    df['status'] = statuses
+    df['areas'] = areas
+    df = df[df['status'] == 1].drop('status', axis=1)
+
+    if cent: 
+        df.drop('centroid', axis=1, inplace=True)
+
+    return df
+
+# Assign areas for train and bike stations
+clean_bike_trips = pd.read_csv('../../data/processed/clean_bike_trips.csv')
+clean_train_ridership = pd.read_csv('../../data/processed/clean_train_ridership.csv')
+
+clean_disadvantaged_areas['centroid'] = clean_disadvantaged_areas['poly'].apply(lambda poly: poly.centroid)
+clean_disadvantaged_areas['poly'].drop_duplicates(inplace=True)
+clean_disadvantaged_areas.reset_index(drop=True, inplace=True)
+
+# Determine areas for train stations, bike stations, and disadvantaged areas
+trains_with_areas = determine_area_for_crimes(data['clean_train_stations'])
+bikes_with_areas = determine_area_for_crimes(data['clean_bike_stations'])
+disadvantaged_areas_within_areas = determine_area_for_crimes(clean_disadvantaged_areas)
+
+#### Data Cleaning to Finalize Datasets
+clean_bike_trips = clean_bike_trips[['station_id', 'date', 'lat', 'long']].merge(
+    right=bikes_with_areas[['id', 'district', 'areas']], 
+    how='left', left_on='station_id', right_on='id').dropna(subset=['district'])
+
+clean_train_ridership = clean_train_ridership[['date', 'line', 'station_name', 'lat', 'long', 'rides']].merge(
+    right=trains_with_areas[['station_name', 'district', 'areas']], 
+    how='left', on='station_name').dropna(subset=['district'])
+
+clean_police_districts = clean_police_districts.merge(
+    right=clean_disadvantaged_areas.groupby('district').agg('count'), 
+    how='left', on='district').fillna(0).rename(columns={'poly': 'disadvantaged_score'})
+
+clean_public_healthindicator = pd.read_csv('../../data/processed/clean_public_healthindicator.csv')
+
+agg_public_healthindicator = pd.merge(
+    left=clean_public_healthindicator, 
+    right=clean_areas[['id', 'district']], 
+    on='id', how='left').drop('id', axis=1)
+
+agg_public_healthindicator = agg_public_healthindicator.groupby('district').agg('mean').reset_index()
+
+#### Save Datasets with District and Areas Data
+def save_data(data: dict[str, pd.DataFrame]) -> None:
     """
-    Bin numerical columns of a DataFrame while leaving exempt columns unchanged.
+    Saves the cleaned DataFrames to CSV files in the processed directory.
 
     Args:
-        df (pd.DataFrame): DataFrame to bin.
-        exempt (List[str]): List of columns to be exempted from binning.
-        bins (int): Number of bins for binning numerical columns.
-
-    Returns:
-        pd.DataFrame: DataFrame with binned numerical columns.
+        data (dict): A dictionary containing DataFrames to be saved.
     """
-    binned_df = pd.DataFrame()
-    for col in df.columns:
-        if col not in exempt:
-            binned_df[col] = pd.cut(df[col], bins=bins, labels=False)
-        else:
-            binned_df[col] = df[col]
-    return binned_df
+    for df_name, df in data.items():
+        df.to_csv(f'../../data/processed/{df_name}.csv', index=False)
 
-# Perform stratified sampling based on binned data
-def stratified_sampling(df_false: pd.DataFrame, df_true: pd.DataFrame, exempt: List[str]) -> pd.DataFrame:
-    """
-    Perform stratified sampling to balance the dataset by matching the number of false samples to the number of true samples.
-
-    Args:
-        df_false (pd.DataFrame): DataFrame containing false samples.
-        df_true (pd.DataFrame): DataFrame containing true samples.
-        exempt (List[str]): List of columns to be exempted from binning.
-
-    Returns:
-        pd.DataFrame: Balanced DataFrame after stratified sampling.
-    """
-    false_bins = sturges_formula(len(df_false))
-    true_bins = sturges_formula(len(df_true))
-
-    df_false_binned = bin_dataframe(df_false, exempt, false_bins)
-    df_false_binned['combined'] = df_false_binned.apply(lambda row: tuple(row), axis=1)
-    combined_weight = df_false_binned['combined'].value_counts(normalize=True)
-    df_false_binned['combined_weight'] = df_false_binned['combined'].apply(lambda x: combined_weight[x])
-    
-    df_false_sample = df_false_binned.sample(n=len(df_true), weights=df_false_binned['combined_weight']).drop(['combined', 'combined_weight'], axis=1).reset_index()
-    sampled_df_false = df_false.loc[df_false_sample.index]
-    
-    return pd.concat([sampled_df_false, df_true]).sample(frac=1).reset_index(drop=True)
-
-# Save datasets to CSV
-def save_datasets(prefix: str, feature_train: pd.DataFrame, target_train: pd.DataFrame, feature_test: pd.DataFrame, target_test: pd.DataFrame) -> None:
-    """
-    Save the training and testing datasets to CSV files.
-
-    Args:
-        prefix (str): Prefix for the output filenames.
-        feature_train (pd.DataFrame): DataFrame containing the training features.
-        target_train (pd.DataFrame): DataFrame containing the training target.
-        feature_test (pd.DataFrame): DataFrame containing the testing features.
-        target_test (pd.DataFrame): DataFrame containing the testing target.
-    """
-    feature_train.to_csv(f'../../data/pre_training/{prefix}_feature_training_sample.csv', index=False)
-    target_train.to_csv(f'../../data/pre_training/{prefix}_target_training_sample.csv', index=False)
-    feature_test.to_csv(f'../../data/pre_training/{prefix}_feature_testing_data.csv', index=False)
-    target_test.to_csv(f'../../data/pre_training/{prefix}_target_testing_data.csv', index=False)
-
-# Main function to orchestrate the process
-def main() -> None:
-    """
-    Main function to orchestrate the data loading, splitting, encoding, datatype optimization, 
-    stratified sampling, and saving of datasets.
-    """
-    # Load data
-    data = load_pre_feature_selection_data()
-
-    # Split the area and district datasets into training and testing datasets
-    area_split = split_train_test(data["area_pre_feature_selection"].drop('area_crimes_this_hour', axis=1),
-                                  data["area_pre_feature_selection"][['year', 'area_crimes_this_hour']], 2020)
-    district_split = split_train_test(data["district_pre_feature_selection"].drop('district_crimes_this_hour', axis=1),
-                                      data["district_pre_feature_selection"][['year', 'district_crimes_this_hour']], 2020)
-
-    # Perform target and frequency encoding
-    area_split["train_features"], area_split["test_features"] = target_and_frequency_encoding(
-        area_split["train_features"], area_split["test_features"], 'area_id', 'area_crimes_this_hour'
-    )
-    district_split["train_features"], district_split["test_features"] = target_and_frequency_encoding(
-        district_split["train_features"], district_split["test_features"], 'district', 'district_crimes_this_hour'
-    )
-
-    # Patch datatypes
-    area_split["train_features"] = patch_datatypes(area_split["train_features"])
-    area_split["test_features"] = patch_datatypes(area_split["test_features"])
-    district_split["train_features"] = patch_datatypes(district_split["train_features"])
-    district_split["test_features"] = patch_datatypes(district_split["test_features"])
-
-    # Combine features and targets
-    area_combined = combine_features_targets(area_split["train_features"], area_split["train_target"], 'area_crimes_this_hour')
-    district_combined = combine_features_targets(district_split["train_features"], district_split["train_target"], 'district_crimes_this_hour')
-
-    # Separate true and false samples for stratified sampling
-    area_combined_false = area_combined[area_combined['crime_status'] == False].reset_index(drop=True)
-    area_combined_true = area_combined[area_combined['crime_status'] == True].reset_index(drop=True)
-    district_combined_false = district_combined[district_combined['crime_status'] == False].reset_index(drop=True)
-    district_combined_true = district_combined[district_combined['crime_status'] == True].reset_index(drop=True)
-
-    # Perform stratified sampling
-    area_training_sample = stratified_sampling(area_combined_false, area_combined_true,
-                                               ['day', 'hour', 'year', 'month', 'day_of_week', 'crime_status', 'area_id_target_encoded', 'area_id_freq_encoded'])
-    district_training_sample = stratified_sampling(district_combined_false, district_combined_true,
-                                                   ['day', 'hour', 'year', 'month', 'day_of_week', 'crime_status', 'district_target_encoded', 'district_freq_encoded'])
-
-    # Split into feature and target datasets
-    area_feature_training_sample = area_training_sample.drop('area_crimes_this_hour', axis=1)
-    area_target_training_sample = area_training_sample[['area_crimes_this_hour']]
-    district_feature_training_sample = district_training_sample.drop('district_crimes_this_hour', axis=1)
-    district_target_training_sample = district_training_sample[['district_crimes_this_hour']]
-
-    # Save datasets
-    save_datasets('area', area_feature_training_sample, area_target_training_sample, area_split["test_features"], area_split["test_target"])
-    save_datasets('district', district_feature_training_sample, district_target_training_sample, district_split["test_features"], district_split["test_target"])
-
-if __name__ == "__main__":
-    main()
+save_data(data)

@@ -141,20 +141,45 @@ This project utilizes a variety of datasets related to Chicago's infrastructure 
 
 ## Requirements
 
-The project relies on a lot of Python packages. Below is the list of the primary dependencies used, but be sure to see `requirements.txt` for the complete package list:
+Here is the complete requirements list (found in requirements.txt):
 
 ```plaintext
-pandas==2.2.2
-numpy==2.0.1
-scikit-learn==1.5.1
-xgboost==2.1.0
-matplotlib==3.9.2
-seaborn==0.13.2
-statsmodels==0.14.2
-scipy==1.14.0
-folium==0.17.0
+certifi==2024.8.30
+charset-normalizer==3.3.2
+contourpy==1.3.0
+cycler==0.12.1
+factor_analyzer==0.5.1
+fonttools==4.53.1
+geodatasets==2024.8.0
 geopandas==1.0.1
-shapely==2.0.5
+idna==3.8
+joblib==1.4.2
+kiwisolver==1.4.7
+matplotlib==3.9.2
+mlxtend==0.23.1
+numpy==2.1.1
+packaging==24.1
+pandas==2.2.2
+patsy==0.5.6
+pillow==10.4.0
+platformdirs==4.3.2
+pooch==1.8.2
+pyogrio==0.9.0
+pyparsing==3.1.4
+pyproj==3.6.1
+python-dateutil==2.9.0.post0
+pytz==2024.1
+requests==2.32.3
+scikit-learn==1.5.1
+scipy==1.14.1
+seaborn==0.13.2
+shapely==2.0.6
+six==1.16.0
+statsmodels==0.14.2
+threadpoolctl==3.5.0
+tzdata==2024.1
+urllib3==2.2.2
+xgboost==2.1.1
 ```
 
 *Note: Ensure that you have these versions installed to avoid compatibility issues.*

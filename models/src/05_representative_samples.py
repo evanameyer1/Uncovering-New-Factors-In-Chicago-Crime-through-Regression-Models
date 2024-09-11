@@ -1,127 +1,174 @@
 import pandas as pd
 import numpy as np
-from typing import List
-from sklearn.preprocessing import MinMaxScaler
 
-# Load pre-feature selection data
-def load_pre_feature_selection_data() -> dict:
+#### Loading Datasets
+def load_data() -> dict[str, pd.DataFrame]:
     """
-    Load pre-feature selection datasets for both area and district data.
+    Loads the area and district datasets for feature selection.
 
     Returns:
-        dict: A dictionary containing DataFrames for area and district pre-feature selection data.
+        dict: Dictionary containing loaded datasets for area and district.
     """
+    area_pre_feature_selection = pd.read_csv('../../data/pre_training/area_pre_feature_selection.csv')
+    district_pre_feature_selection = pd.read_csv('../../data/pre_training/district_pre_feature_selection.csv')
+    
     return {
-        "area_pre_feature_selection": pd.read_csv('../../data/pre_training/area_pre_feature_selection.csv'),
-        "district_pre_feature_selection": pd.read_csv('../../data/pre_training/district_pre_feature_selection.csv')
+        'area_pre_feature_selection': area_pre_feature_selection,
+        'district_pre_feature_selection': district_pre_feature_selection
     }
 
-# Split dataset into training and testing sets
-def split_train_test(features: pd.DataFrame, target: pd.DataFrame, year: int) -> dict:
+data = load_data()
+area_pre_feature_selection = data['area_pre_feature_selection']
+district_pre_feature_selection = data['district_pre_feature_selection']
+
+#### Splitting Data into Features and Targets
+area_features = area_pre_feature_selection.drop('area_crimes_this_hour', axis=1)
+district_features = district_pre_feature_selection.drop('district_crimes_this_hour', axis=1)
+
+area_target = area_pre_feature_selection[['year', 'area_crimes_this_hour']]
+district_target = district_pre_feature_selection[['year', 'district_crimes_this_hour']]
+
+#### Splitting Data into Training and Testing
+def split_data(features: pd.DataFrame, target: pd.DataFrame, year_col: str, split_year: int) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
-    Split the features and target data into training and testing sets based on the specified year.
+    Splits the dataset into training and testing based on the specified year.
 
     Args:
-        features (pd.DataFrame): DataFrame containing the features.
-        target (pd.DataFrame): DataFrame containing the target variable.
-        year (int): Year used to split the data into training (before the year) and testing (equal to the year).
+        features (pd.DataFrame): Feature dataset.
+        target (pd.DataFrame): Target dataset.
+        year_col (str): Column name representing the year.
+        split_year (int): Year to split the data.
 
     Returns:
-        dict: A dictionary containing training and testing sets for features and target variables.
+        tuple: Training and testing features, and training and testing targets.
     """
-    return {
-        "train_features": features[features['year'] < year].reset_index(drop=True),
-        "test_features": features[features['year'] == year].reset_index(drop=True),
-        "train_target": target[target['year'] < year].reset_index(drop=True).drop('year', axis=1),
-        "test_target": target[target['year'] == year].reset_index(drop=True).drop('year', axis=1)
-    }
+    feature_training_data = features[features[year_col] < split_year].reset_index(drop=True)
+    feature_testing_data = features[features[year_col] == split_year].reset_index(drop=True)
 
-# Target and frequency encoding for categorical columns
-def target_and_frequency_encoding(training_data: pd.DataFrame, testing_data: pd.DataFrame, group_col: str, target_col: str) -> tuple:
+    target_training_data = target[target[year_col] < split_year].reset_index(drop=True)
+    target_testing_data = target[target[year_col] == split_year].reset_index(drop=True)
+    
+    return feature_training_data, feature_testing_data, target_training_data, target_testing_data
+
+# Splitting area and district datasets into training and testing sets
+area_feature_training_data, area_feature_testing_data, area_target_training_data, area_target_testing_data = split_data(area_features, area_target, 'year', 2020)
+district_feature_training_data, district_feature_testing_data, district_target_training_data, district_target_testing_data = split_data(district_features, district_target, 'year', 2020)
+
+#### Dropping Columns and Preparing Features
+def prepare_features(feature_data: pd.DataFrame, target_data: pd.DataFrame, drop_cols: list[str]) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
-    Perform target encoding and frequency encoding on a specified categorical column.
+    Prepares features by dropping specified columns and removing year from the target data.
 
     Args:
-        training_data (pd.DataFrame): Training data DataFrame.
-        testing_data (pd.DataFrame): Testing data DataFrame.
-        group_col (str): Categorical column to be encoded.
-        target_col (str): Target column used for target encoding.
+        feature_data (pd.DataFrame): Feature dataset.
+        target_data (pd.DataFrame): Target dataset.
+        drop_cols (list[str]): Columns to drop from the feature data.
 
     Returns:
-        tuple: Tuple containing the modified training and testing DataFrames with encoded columns.
+        tuple: Prepared feature and target datasets.
     """
-    means = training_data.groupby(group_col)[target_col].mean()
-    freq = training_data[group_col].value_counts() / len(training_data)
-    
-    training_data[f'{group_col}_target_encoded'] = training_data[group_col].map(means)
-    testing_data[f'{group_col}_target_encoded'] = testing_data[group_col].map(means)
-    
-    training_data[f'{group_col}_freq_encoded'] = training_data[group_col].map(freq)
-    testing_data[f'{group_col}_freq_encoded'] = testing_data[group_col].map(freq)
+    feature_data = feature_data.drop(drop_cols, axis=1)
+    target_data = target_data.drop('year', axis=1)
+    return feature_data, target_data
+
+# Dropping unnecessary columns
+area_feature_training_data, area_target_training_data = prepare_features(area_feature_training_data, area_target_training_data, ['date_hour'])
+area_feature_testing_data, area_target_testing_data = prepare_features(area_feature_testing_data, area_target_testing_data, ['date_hour'])
+
+district_feature_training_data, district_target_training_data = prepare_features(district_feature_training_data, district_target_training_data, ['date_hour'])
+district_feature_testing_data, district_target_testing_data = prepare_features(district_feature_testing_data, district_target_testing_data, ['date_hour'])
+
+#### Target and Frequency Encoding of District/Area Columns
+def encode_columns(training_data: pd.DataFrame, testing_data: pd.DataFrame, col: str, means: pd.Series, freq: pd.Series, target_encoded_col: str, freq_encoded_col: str) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Encodes a specified column using target and frequency encoding.
+
+    Args:
+        training_data (pd.DataFrame): Training dataset.
+        testing_data (pd.DataFrame): Testing dataset.
+        col (str): Column to encode.
+        means (pd.Series): Mean values for target encoding.
+        freq (pd.Series): Frequency values for frequency encoding.
+        target_encoded_col (str): Name of the new target-encoded column.
+        freq_encoded_col (str): Name of the new frequency-encoded column.
+
+    Returns:
+        tuple: Updated training and testing datasets.
+    """
+    training_data[target_encoded_col] = training_data[col].map(means)
+    testing_data[target_encoded_col] = testing_data[col].map(means)
+
+    training_data[freq_encoded_col] = training_data[col].map(freq)
+    testing_data[freq_encoded_col] = testing_data[col].map(freq)
     
     return training_data, testing_data
 
-# Patch datatypes to optimize memory usage
+# Target and frequency encoding for area and district columns
+area_means = area_pre_feature_selection.groupby('area_id')['area_crimes_this_hour'].mean()
+district_means = district_pre_feature_selection.groupby('district')['district_crimes_this_hour'].mean()
+
+area_freq = area_pre_feature_selection['area_id'].value_counts() / len(area_pre_feature_selection)
+district_freq = district_pre_feature_selection['district'].value_counts() / len(district_pre_feature_selection)
+
+area_feature_training_data, area_feature_testing_data = encode_columns(area_feature_training_data, area_feature_testing_data, 'area_id', area_means, area_freq, 'area_id_target_encoded', 'area_id_freq_encoded')
+district_feature_training_data, district_feature_testing_data = encode_columns(district_feature_training_data, district_feature_testing_data, 'district', district_means, district_freq, 'district_target_encoded', 'district_freq_encoded')
+
+# Dropping the original area_id and district columns
+area_feature_training_data.drop('area_id', axis=1, inplace=True)
+area_feature_testing_data.drop('area_id', axis=1, inplace=True)
+
+district_feature_training_data.drop('district', axis=1, inplace=True)
+district_feature_testing_data.drop('district', axis=1, inplace=True)
+
+#### Patching Data Types
 def patch_datatypes(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Optimize memory usage by converting column data types.
+    Converts float64 columns to float32 and int64 columns to int32 to reduce memory usage.
 
     Args:
-        df (pd.DataFrame): DataFrame to optimize.
+        df (pd.DataFrame): Input DataFrame.
 
     Returns:
-        pd.DataFrame: Optimized DataFrame with reduced memory usage.
+        pd.DataFrame: DataFrame with patched data types.
     """
     float_cols = df.select_dtypes(include=['float64']).columns
     df[float_cols] = df[float_cols].astype(np.float32)
 
     int_cols = df.select_dtypes(include=['int64']).columns
-    df[int_cols] = df[int_cols].astype(np.int32)
-    
+    df[int_cols] = df[int_cols].astype(np.int32)    
+      
     return df
 
-# Combine features and targets
-def combine_features_targets(features: pd.DataFrame, target: pd.DataFrame, target_col: str) -> pd.DataFrame:
-    """
-    Combine features and target columns into a single DataFrame.
+# Patch data types
+area_feature_training_data = patch_datatypes(area_feature_training_data)
+area_feature_testing_data = patch_datatypes(area_feature_testing_data)
+district_feature_training_data = patch_datatypes(district_feature_training_data)
+district_feature_testing_data = patch_datatypes(district_feature_testing_data)
 
-    Args:
-        features (pd.DataFrame): DataFrame containing features.
-        target (pd.DataFrame): DataFrame containing the target variable.
-        target_col (str): Name of the target column to be used in the combined DataFrame.
-
-    Returns:
-        pd.DataFrame: Combined DataFrame with a new column 'crime_status' indicating whether the target variable is greater than 0.
-    """
-    combined_df = pd.concat([features, target], axis=1)
-    combined_df['crime_status'] = combined_df[target_col] > 0
-    return combined_df
-
-# Apply Sturges' formula to determine the number of bins
+#### Selecting Representative Sample Using Sturges' Formula
 def sturges_formula(n: int) -> int:
     """
-    Determine the number of bins using Sturges' formula.
+    Sturges' formula to determine the number of bins.
 
     Args:
-        n (int): Number of observations.
+        n (int): Number of samples.
 
     Returns:
-        int: Number of bins calculated using Sturges' formula.
+        int: Number of bins.
     """
     return int(np.ceil(np.log2(n) + 1))
 
-# Bin the DataFrame based on the number of bins
-def bin_dataframe(df: pd.DataFrame, exempt: List[str], bins: int) -> pd.DataFrame:
+def bin_dataframe(df: pd.DataFrame, exempt: list[str], bins: int) -> pd.DataFrame:
     """
-    Bin numerical columns of a DataFrame while leaving exempt columns unchanged.
+    Bins the columns of a DataFrame, excluding specified columns.
 
     Args:
         df (pd.DataFrame): DataFrame to bin.
-        exempt (List[str]): List of columns to be exempted from binning.
-        bins (int): Number of bins for binning numerical columns.
+        exempt (list[str]): List of columns to exempt from binning.
+        bins (int): Number of bins to use.
 
     Returns:
-        pd.DataFrame: DataFrame with binned numerical columns.
+        pd.DataFrame: Binned DataFrame.
     """
     binned_df = pd.DataFrame()
     for col in df.columns:
@@ -129,105 +176,52 @@ def bin_dataframe(df: pd.DataFrame, exempt: List[str], bins: int) -> pd.DataFram
             binned_df[col] = pd.cut(df[col], bins=bins, labels=False)
         else:
             binned_df[col] = df[col]
+    
     return binned_df
 
-# Perform stratified sampling based on binned data
-def stratified_sampling(df_false: pd.DataFrame, df_true: pd.DataFrame, exempt: List[str]) -> pd.DataFrame:
+# Sturges' formula and binning for area and district training sets
+area_false_bins = sturges_formula(len(area_feature_training_data))
+district_false_bins = sturges_formula(len(district_feature_training_data))
+
+area_training_combined = pd.concat([area_feature_training_data, area_target_training_data], axis=1)
+area_training_combined['crime_status'] = area_training_combined['area_crimes_this_hour'] > 0
+
+area_training_combined_false = area_training_combined[area_training_combined['crime_status'] == False].reset_index(drop=True)
+area_training_combined_true = area_training_combined[area_training_combined['crime_status'] == True].reset_index(drop=True)
+
+# Binning and sampling
+area_training_combined_false_binned = bin_dataframe(area_training_combined_false, ['day', 'hour', 'year', 'month', 'day_of_week', 'crime_status', 'area_id_target_encoded', 'area_id_freq_encoded'], area_false_bins)
+area_training_combined_false_binned['combined'] = area_training_combined_false_binned.apply(lambda row: tuple(row), axis=1)
+area_combined_false_weight = area_training_combined_false_binned['combined'].value_counts(normalize=True)
+area_training_combined_false_binned['combined_weight'] = area_training_combined_false_binned['combined'].apply(lambda x: area_combined_false_weight[x])
+area_training_combined_false_binned_sample = area_training_combined_false_binned.sample(n=len(area_training_combined_true), weights=area_training_combined_false_binned['combined_weight']).drop(['combined', 'combined_weight'], axis=1).reset_index()
+
+# Creating balanced samples for area
+area_training_false_sample = area_training_combined_false.loc[area_training_combined_false_binned_sample.index]
+area_training_sample = pd.concat([area_training_false_sample, area_training_combined_true]).sample(frac=1).reset_index(drop=True)
+
+# Prepare final features and targets for area and district
+area_feature_training_sample = area_training_sample.drop('area_crimes_this_hour', axis=1)
+area_target_training_sample = area_training_sample[['area_crimes_this_hour']]
+
+#### Saving Pre-processed Data
+def save_data(df: pd.DataFrame, path: str) -> None:
     """
-    Perform stratified sampling to balance the dataset by matching the number of false samples to the number of true samples.
+    Saves the DataFrame to a CSV file.
 
     Args:
-        df_false (pd.DataFrame): DataFrame containing false samples.
-        df_true (pd.DataFrame): DataFrame containing true samples.
-        exempt (List[str]): List of columns to be exempted from binning.
-
-    Returns:
-        pd.DataFrame: Balanced DataFrame after stratified sampling.
+        df (pd.DataFrame): DataFrame to save.
+        path (str): Path to save the CSV file.
     """
-    false_bins = sturges_formula(len(df_false))
-    true_bins = sturges_formula(len(df_true))
+    df.to_csv(path, index=False)
 
-    df_false_binned = bin_dataframe(df_false, exempt, false_bins)
-    df_false_binned['combined'] = df_false_binned.apply(lambda row: tuple(row), axis=1)
-    combined_weight = df_false_binned['combined'].value_counts(normalize=True)
-    df_false_binned['combined_weight'] = df_false_binned['combined'].apply(lambda x: combined_weight[x])
-    
-    df_false_sample = df_false_binned.sample(n=len(df_true), weights=df_false_binned['combined_weight']).drop(['combined', 'combined_weight'], axis=1).reset_index()
-    sampled_df_false = df_false.loc[df_false_sample.index]
-    
-    return pd.concat([sampled_df_false, df_true]).sample(frac=1).reset_index(drop=True)
+# Save area and district samples, features, and targets
+save_data(area_feature_training_sample, '../../data/pre_training/area_feature_training_sample.csv')
+save_data(area_target_training_sample, '../../data/pre_training/area_target_training_sample.csv')
+save_data(area_feature_testing_data, '../../data/pre_training/area_feature_testing_data.csv')
+save_data(area_target_testing_data, '../../data/pre_training/area_target_testing_data.csv')
 
-# Save datasets to CSV
-def save_datasets(prefix: str, feature_train: pd.DataFrame, target_train: pd.DataFrame, feature_test: pd.DataFrame, target_test: pd.DataFrame) -> None:
-    """
-    Save the training and testing datasets to CSV files.
-
-    Args:
-        prefix (str): Prefix for the output filenames.
-        feature_train (pd.DataFrame): DataFrame containing the training features.
-        target_train (pd.DataFrame): DataFrame containing the training target.
-        feature_test (pd.DataFrame): DataFrame containing the testing features.
-        target_test (pd.DataFrame): DataFrame containing the testing target.
-    """
-    feature_train.to_csv(f'../../data/pre_training/{prefix}_feature_training_sample.csv', index=False)
-    target_train.to_csv(f'../../data/pre_training/{prefix}_target_training_sample.csv', index=False)
-    feature_test.to_csv(f'../../data/pre_training/{prefix}_feature_testing_data.csv', index=False)
-    target_test.to_csv(f'../../data/pre_training/{prefix}_target_testing_data.csv', index=False)
-
-# Main function to orchestrate the process
-def main() -> None:
-    """
-    Main function to orchestrate the data loading, splitting, encoding, datatype optimization, 
-    stratified sampling, and saving of datasets.
-    """
-    # Load data
-    data = load_pre_feature_selection_data()
-
-    # Split the area and district datasets into training and testing datasets
-    area_split = split_train_test(data["area_pre_feature_selection"].drop('area_crimes_this_hour', axis=1),
-                                  data["area_pre_feature_selection"][['year', 'area_crimes_this_hour']], 2020)
-    district_split = split_train_test(data["district_pre_feature_selection"].drop('district_crimes_this_hour', axis=1),
-                                      data["district_pre_feature_selection"][['year', 'district_crimes_this_hour']], 2020)
-
-    # Perform target and frequency encoding
-    area_split["train_features"], area_split["test_features"] = target_and_frequency_encoding(
-        area_split["train_features"], area_split["test_features"], 'area_id', 'area_crimes_this_hour'
-    )
-    district_split["train_features"], district_split["test_features"] = target_and_frequency_encoding(
-        district_split["train_features"], district_split["test_features"], 'district', 'district_crimes_this_hour'
-    )
-
-    # Patch datatypes
-    area_split["train_features"] = patch_datatypes(area_split["train_features"])
-    area_split["test_features"] = patch_datatypes(area_split["test_features"])
-    district_split["train_features"] = patch_datatypes(district_split["train_features"])
-    district_split["test_features"] = patch_datatypes(district_split["test_features"])
-
-    # Combine features and targets
-    area_combined = combine_features_targets(area_split["train_features"], area_split["train_target"], 'area_crimes_this_hour')
-    district_combined = combine_features_targets(district_split["train_features"], district_split["train_target"], 'district_crimes_this_hour')
-
-    # Separate true and false samples for stratified sampling
-    area_combined_false = area_combined[area_combined['crime_status'] == False].reset_index(drop=True)
-    area_combined_true = area_combined[area_combined['crime_status'] == True].reset_index(drop=True)
-    district_combined_false = district_combined[district_combined['crime_status'] == False].reset_index(drop=True)
-    district_combined_true = district_combined[district_combined['crime_status'] == True].reset_index(drop=True)
-
-    # Perform stratified sampling
-    area_training_sample = stratified_sampling(area_combined_false, area_combined_true,
-                                               ['day', 'hour', 'year', 'month', 'day_of_week', 'crime_status', 'area_id_target_encoded', 'area_id_freq_encoded'])
-    district_training_sample = stratified_sampling(district_combined_false, district_combined_true,
-                                                   ['day', 'hour', 'year', 'month', 'day_of_week', 'crime_status', 'district_target_encoded', 'district_freq_encoded'])
-
-    # Split into feature and target datasets
-    area_feature_training_sample = area_training_sample.drop('area_crimes_this_hour', axis=1)
-    area_target_training_sample = area_training_sample[['area_crimes_this_hour']]
-    district_feature_training_sample = district_training_sample.drop('district_crimes_this_hour', axis=1)
-    district_target_training_sample = district_training_sample[['district_crimes_this_hour']]
-
-    # Save datasets
-    save_datasets('area', area_feature_training_sample, area_target_training_sample, area_split["test_features"], area_split["test_target"])
-    save_datasets('district', district_feature_training_sample, district_target_training_sample, district_split["test_features"], district_split["test_target"])
-
-if __name__ == "__main__":
-    main()
+save_data(district_feature_training_data, '../../data/pre_training/district_feature_training_sample.csv')
+save_data(district_target_training_data, '../../data/pre_training/district_target_training_sample.csv')
+save_data(district_feature_testing_data, '../../data/pre_training/district_feature_testing_data.csv')
+save_data(district_target_testing_data, '../../data/pre_training/district_target_testing_data.csv')

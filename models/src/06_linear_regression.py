@@ -1,4 +1,3 @@
-# Import necessary libraries
 import pandas as pd
 import numpy as np
 from datetime import datetime
@@ -8,7 +7,6 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from mlxtend.feature_selection import SequentialFeatureSelector as SFS
-import statsmodels.api as sm
 
 # Load datasets
 area_feature_training_sample = pd.read_csv('../../data/pre_training/area_feature_training_sample.csv')
@@ -16,11 +14,10 @@ area_target_training_sample = pd.read_csv('../../data/pre_training/area_target_t
 district_feature_training_sample = pd.read_csv('../../data/pre_training/district_feature_training_sample.csv')
 district_target_training_sample = pd.read_csv('../../data/pre_training/district_target_training_sample.csv')
 
-# Remove 'crime_status' column
+# Drop 'crime_status' from the feature sets
 area_feature_training_sample.drop('crime_status', axis=1, inplace=True)
 district_feature_training_sample.drop('crime_status', axis=1, inplace=True)
 
-# Load testing datasets
 area_feature_testing_data = pd.read_csv('../../data/pre_training/area_feature_testing_data.csv')
 area_target_testing_data = pd.read_csv('../../data/pre_training/area_target_testing_data.csv')
 district_feature_testing_data = pd.read_csv('../../data/pre_training/district_feature_testing_data.csv')
@@ -28,18 +25,18 @@ district_target_testing_data = pd.read_csv('../../data/pre_training/district_tar
 
 def generate_correlation_heatmap(df: pd.DataFrame, figsize: tuple, title: str, save_name: str) -> None:
     """
-    Generate a heatmap to visualize correlations between features.
-    
-    Args:
-        df (pd.DataFrame): The input dataframe for which the heatmap is generated.
-        figsize (tuple): The size of the heatmap figure.
-        title (str): The title of the heatmap.
-        save_name (str): The filename for saving the heatmap image.
-    """
-    # Generate a mask to only show the bottom triangle
-    mask = np.triu(np.ones_like(df.corr(), dtype=bool))
+    Generates a correlation heatmap for a given DataFrame.
 
-    # Generate heatmap
+    Args:
+    df (pd.DataFrame): The dataframe containing the data to be correlated.
+    figsize (tuple): The size of the heatmap.
+    title (str): The title of the heatmap.
+    save_name (str): The filename to save the heatmap image.
+
+    Returns:
+    None
+    """
+    mask = np.triu(np.ones_like(df.corr(), dtype=bool))  # Generate mask for the upper triangle
     plt.figure(figsize=figsize)
     sns.heatmap(df.corr(), annot=True, mask=mask, vmin=-1, vmax=1)
     plt.title(title)
@@ -48,221 +45,195 @@ def generate_correlation_heatmap(df: pd.DataFrame, figsize: tuple, title: str, s
 
 def compute_vif(feature_df: pd.DataFrame) -> pd.DataFrame:
     """
-    Compute Variance Inflation Factor (VIF) for all features in a dataframe to detect multicollinearity.
+    Computes Variance Inflation Factor (VIF) for each feature to check for multicollinearity.
 
     Args:
-        feature_df (pd.DataFrame): The input feature dataframe.
+    feature_df (pd.DataFrame): DataFrame containing features for which VIF needs to be calculated.
 
     Returns:
-        pd.DataFrame: A dataframe containing features and their corresponding VIF values.
+    pd.DataFrame: A DataFrame containing features and their corresponding VIF values.
     """
     print(f"{datetime.now()} - Starting VIF computation")
     X = feature_df.copy()
-    X['intercept'] = 1  # Add constant for VIF computation
-    
-    # Calculate VIF values
+    X['intercept'] = 1  # Add a constant term for VIF calculation
     vif = pd.DataFrame()
     vif["feature"] = X.columns
     vif["vif"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
-    vif = vif[vif['feature'] != 'intercept']  # Remove intercept
-    
+    vif = vif[vif['feature'] != 'intercept']
     print(f"{datetime.now()} - Completed VIF computation")
     return vif
 
 def optimize_vif(feature_df: pd.DataFrame, vif_threshold: float) -> pd.DataFrame:
     """
-    Optimize feature set by iteratively dropping features with high VIF values.
+    Iteratively drops features with the highest VIF value until all features are below the given threshold.
 
     Args:
-        feature_df (pd.DataFrame): The input feature dataframe.
-        vif_threshold (float): The VIF threshold for dropping features.
+    feature_df (pd.DataFrame): The input DataFrame with features.
+    vif_threshold (float): The VIF threshold above which features are dropped.
 
     Returns:
-        pd.DataFrame: A dataframe with optimized features and their corresponding VIF values.
+    pd.DataFrame: A DataFrame containing the remaining features after optimization.
     """
     print(f"{datetime.now()} - Starting VIF optimization")
     df = feature_df.copy()
-    vif_df = compute_vif(feature_df)
-    
+    vif_df = compute_vif(df)
+
     while (vif_df['vif'] >= vif_threshold).any():
-        print(f"{datetime.now()} - Current VIF values:\n{vif_df}")
         largest_vif_feature = vif_df.loc[vif_df['vif'].idxmax(), 'feature']
         print(f"{datetime.now()} - Dropping feature: {largest_vif_feature} with VIF score of: {vif_df['vif'].max()}")
         df = df.drop(columns=[largest_vif_feature])
         vif_df = compute_vif(df)
-    
+
     print(f"{datetime.now()} - Completed VIF optimization")
     return vif_df
 
-# Optimize features by VIF for both area and district datasets
+# Optimize VIF for area and district datasets
 area_selected_features_ten = optimize_vif(area_feature_training_sample, 10)
 district_selected_features_ten = optimize_vif(district_feature_training_sample, 10)
 
-# Update training and testing datasets with selected features
-area_feature_training_sample = area_feature_training_sample[list(area_selected_features_ten['feature'].values)]
-area_feature_testing_data = area_feature_testing_data[list(area_selected_features_ten['feature'].values)]
-district_feature_training_sample = district_feature_training_sample[list(district_selected_features_ten['feature'].values)]
-district_feature_testing_data = district_feature_testing_data[list(district_selected_features_ten['feature'].values)]
+# Filter selected features for training and testing datasets
+area_feature_training_sample = area_feature_training_sample[area_selected_features_ten['feature'].values]
+area_feature_testing_data = area_feature_testing_data[area_selected_features_ten['feature'].values]
+district_feature_training_sample = district_feature_training_sample[district_selected_features_ten['feature'].values]
+district_feature_testing_data = district_feature_testing_data[district_selected_features_ten['feature'].values]
 
-# Further optimize features by VIF using a lower threshold
+# Further optimize VIF with a threshold of 5
 area_selected_features_five = optimize_vif(area_feature_training_sample, 5)
 district_selected_features_five = optimize_vif(district_feature_training_sample, 5)
 
-# Update training and testing datasets with further optimized features
-area_feature_training_sample = area_feature_training_sample[list(area_selected_features_five['feature'].values)]
-area_feature_testing_data = area_feature_testing_data[list(area_selected_features_five['feature'].values)]
-district_feature_training_sample = district_feature_training_sample[list(district_selected_features_five['feature'].values)]
-district_feature_testing_data = district_feature_testing_data[list(district_selected_features_five['feature'].values)]
+# Filter selected features based on VIF threshold of 5
+area_feature_training_sample = area_feature_training_sample[area_selected_features_five['feature'].values]
+area_feature_testing_data = area_feature_testing_data[area_selected_features_five['feature'].values]
+district_feature_training_sample = district_feature_training_sample[district_selected_features_five['feature'].values]
+district_feature_testing_data = district_feature_testing_data[district_selected_features_five['feature'].values]
 
-def select_best_features(model, feature_data: pd.DataFrame, target_data: pd.DataFrame, cv: int = 5) -> list:
+def feature_selection_sfs(X_train: pd.DataFrame, y_train: pd.DataFrame) -> list:
     """
-    Select the best subset of features using Sequential Feature Selector (SFS).
+    Performs Sequential Forward Selection (SFS) to select the best features based on negative mean squared error.
 
     Args:
-        model: The machine learning model to be used for feature selection.
-        feature_data (pd.DataFrame): The input feature dataframe.
-        target_data (pd.DataFrame): The target dataframe.
-        cv (int): The number of cross-validation folds.
+    X_train (pd.DataFrame): Training features.
+    y_train (pd.DataFrame): Target variable for training.
 
     Returns:
-        list: The list of the best feature indices.
+    list: List of selected feature names.
     """
-    sfs = SFS(model, k_features='best', forward=True, floating=False, scoring='neg_mean_squared_error', cv=cv, n_jobs=15, verbose=2)
-    sfs.fit(feature_data, target_data)
-    
+    model = LinearRegression()
+    sfs = SFS(model, k_features='best', forward=True, floating=False, scoring='neg_mean_squared_error', n_jobs=15, cv=5, verbose=2)
+    sfs.fit(X_train, y_train)
+
     best_avg_score = -1 * float('inf')
     best_subset = None
-    
-    # Find the best feature subset
+
+    # Iterate through the subsets to find the best feature set
     for subset, values in sfs.subsets_.items():
         avg_score = values['avg_score']
         if avg_score > best_avg_score:
             best_avg_score = avg_score
             best_subset = values['feature_idx']
-    
-    return [col for idx, col in enumerate(feature_data.columns) if idx in best_subset]
 
-# Select the best features for both area and district models
-area_best_features = select_best_features(LinearRegression(), area_feature_training_sample, area_target_training_sample)
-district_best_features = select_best_features(LinearRegression(), district_feature_training_sample, district_target_training_sample)
+    return [col for idx, col in enumerate(X_train.columns) if idx in best_subset]
 
-# Update training and testing datasets with the best selected features
-area_feature_training_sample = area_feature_training_sample[area_best_features]
-area_feature_testing_data = area_feature_testing_data[area_best_features]
-district_feature_training_sample = district_feature_training_sample[district_best_features]
-district_feature_testing_data = district_feature_testing_data[district_best_features]
+# Select best features using SFS
+area_best_features = feature_selection_sfs(area_feature_training_sample, area_target_training_sample)
+district_best_features = feature_selection_sfs(district_feature_training_sample, district_target_training_sample)
 
-def train_model(feature_data: pd.DataFrame, target_data: pd.DataFrame) -> LinearRegression:
+def train_model(X_train: pd.DataFrame, y_train: pd.DataFrame) -> LinearRegression:
     """
-    Train a linear regression model on the provided data.
+    Trains a Linear Regression model on the given training data.
 
     Args:
-        feature_data (pd.DataFrame): The input feature dataframe for training.
-        target_data (pd.DataFrame): The target dataframe for training.
+    X_train (pd.DataFrame): Training features.
+    y_train (pd.DataFrame): Target variable for training.
 
     Returns:
-        LinearRegression: The trained linear regression model.
+    LinearRegression: Trained Linear Regression model.
     """
     model = LinearRegression()
-    model.fit(feature_data, target_data)
+    model.fit(X_train, y_train)
     return model
 
-# Train the final area and district models
-area_final_model = train_model(area_feature_training_sample, area_target_training_sample)
-district_final_model = train_model(district_feature_training_sample, district_target_training_sample)
+# Train final models for area and district datasets
+area_final_model = train_model(area_feature_training_sample[area_best_features], area_target_training_sample)
+district_final_model = train_model(district_feature_training_sample[district_best_features], district_target_training_sample)
 
-def evaluate_model(model, feature_data: pd.DataFrame, target_data: pd.DataFrame) -> dict:
+def evaluate_model(model: LinearRegression, X_test: pd.DataFrame, y_test: pd.DataFrame) -> None:
     """
-    Evaluate a trained model using various metrics.
+    Evaluates the trained model on the test data and prints performance metrics.
 
     Args:
-        model: The trained machine learning model.
-        feature_data (pd.DataFrame): The input feature dataframe for evaluation.
-        target_data (pd.DataFrame): The target dataframe for evaluation.
+    model (LinearRegression): Trained Linear Regression model.
+    X_test (pd.DataFrame): Test features.
+    y_test (pd.DataFrame): True test targets.
 
     Returns:
-        dict: A dictionary containing evaluation metrics.
+    None
     """
-    predictions = model.predict(feature_data)
-    mse = mean_squared_error(target_data, predictions)
+    predictions = model.predict(X_test)
+    mse = mean_squared_error(y_test, predictions)
     rmse = np.sqrt(mse)
-    mae = mean_absolute_error(target_data, predictions)
-    r2 = r2_score(target_data, predictions)
-    
-    return {
-        "MSE": mse,
-        "RMSE": rmse,
-        "MAE": mae,
-        "R^2": r2
-    }
+    mae = mean_absolute_error(y_test, predictions)
+    r2 = r2_score(y_test, predictions)
 
-# Evaluate area model performance
-area_false_metrics = evaluate_model(area_final_model, area_feature_testing_data.loc[area_target_testing_data[area_target_testing_data['area_crimes_this_hour'] == 0].index].reset_index(drop=True), area_target_testing_data[area_target_testing_data['area_crimes_this_hour'] == 0].reset_index(drop=True))
-area_true_metrics = evaluate_model(area_final_model, area_feature_testing_data.loc[area_target_testing_data[area_target_testing_data['area_crimes_this_hour'] > 0].index].reset_index(drop=True), area_target_testing_data[area_target_testing_data['area_crimes_this_hour'] > 0].reset_index(drop=True))
+    # Print metrics
+    print(f"Mean Squared Error (MSE): {mse}")
+    print(f"Root Mean Squared Error (RMSE): {rmse}")
+    print(f"Mean Absolute Error (MAE): {mae}")
+    print(f"R^2 Score: {r2}")
 
-# Print area model performance metrics
-print("Area Model Performance Metrics for False Crime Status:")
-print(area_false_metrics)
-print("Area Model Performance Metrics for True Crime Status:")
-print(area_true_metrics)
+# Evaluate models for different scenarios
+evaluate_model(area_final_model, area_feature_testing_data, area_target_testing_data)
+evaluate_model(district_final_model, district_feature_testing_data, district_target_testing_data)
 
-# Evaluate district model performance
-district_false_metrics = evaluate_model(district_final_model, district_feature_testing_data.loc[district_target_testing_data[district_target_testing_data['district_crimes_this_hour'] == 0].index].reset_index(drop=True), district_target_testing_data[district_target_testing_data['district_crimes_this_hour'] == 0].reset_index(drop=True))
-district_true_metrics = evaluate_model(district_final_model, district_feature_testing_data.loc[district_target_testing_data[district_target_testing_data['district_crimes_this_hour'] > 0].index].reset_index(drop=True), district_target_testing_data[district_target_testing_data['district_crimes_this_hour'] > 0].reset_index(drop=True))
-
-# Print district model performance metrics
-print("District Model Performance Metrics for False Crime Status:")
-print(district_false_metrics)
-print("District Model Performance Metrics for True Crime Status:")
-print(district_true_metrics)
-
-def analyze_feature_importances(model, feature_data: pd.DataFrame, plot_title: str, save_name: str) -> None:
+def analyze_feature_importances(model: LinearRegression, feature_columns: pd.Index) -> pd.DataFrame:
     """
-    Analyze and plot feature importances for a linear regression model.
+    Analyzes the feature importances by examining the coefficients of a trained linear model.
 
     Args:
-        model: The trained machine learning model.
-        feature_data (pd.DataFrame): The input feature dataframe.
-        plot_title (str): The title for the plot.
-        save_name (str): The filename for saving the plot.
+    model (LinearRegression): Trained linear model.
+    feature_columns (pd.Index): List of feature names.
+
+    Returns:
+    pd.DataFrame: DataFrame containing features and their coefficient values.
     """
     coef_df = pd.DataFrame({
-        'Feature': feature_data.columns,
+        'Feature': feature_columns,
         'Coefficient': model.coef_
     })
-    
+
+    # Sort by absolute coefficient values
     coef_df['Abs_Coefficient'] = coef_df['Coefficient'].abs()
-    coef_df = coef_df.sort_values(by='Abs_Coefficient', ascending=False)
-    
+    return coef_df.sort_values(by='Abs_Coefficient', ascending=False)
+
+# Analyze feature importances for both area and district models
+area_coef_df = analyze_feature_importances(area_final_model, area_feature_training_sample.columns)
+district_coef_df = analyze_feature_importances(district_final_model, district_feature_training_sample.columns)
+
+def plot_feature_importances(coef_df: pd.DataFrame, title: str, save_name: str) -> None:
+    """
+    Plots feature importances from the linear model's coefficients.
+
+    Args:
+    coef_df (pd.DataFrame): DataFrame containing features and their coefficients.
+    title (str): Plot title.
+    save_name (str): Name of the file to save the plot.
+
+    Returns:
+    None
+    """
     plt.figure(figsize=(8, 10))
     plt.barh(coef_df['Feature'], coef_df['Coefficient'], color='blue')
     plt.xlabel('Coefficient Value')
-    plt.title(plot_title)
+    plt.title(title)
     plt.gca().invert_yaxis()
     plt.tight_layout()
     plt.savefig(f'../results/linear_regression/{save_name}.png')
     plt.show()
 
-# Analyze feature importances for both models
-analyze_feature_importances(area_final_model, area_feature_training_sample, 'Feature Importances from Area Model', 'area_feature_coefficients')
-analyze_feature_importances(district_final_model, district_feature_training_sample, 'Feature Importances from District Model', 'district_feature_coefficients')
+# Plot feature importances for area and district models
+plot_feature_importances(area_coef_df, 'Feature Importances from Area Model', 'area_feature_coefficients')
+plot_feature_importances(district_coef_df, 'Feature Importances from District Model', 'district_feature_coefficients')
 
-def run_ols_analysis(feature_data: pd.DataFrame, target_data: pd.DataFrame) -> None:
-    """
-    Run OLS regression analysis and print the summary.
-
-    Args:
-        feature_data (pd.DataFrame): The input feature dataframe.
-        target_data (pd.DataFrame): The target dataframe.
-    """
-    feature_data_const = sm.add_constant(feature_data)
-    sm_model = sm.OLS(target_data, feature_data_const).fit()
-    print(sm_model.summary())
-
-# Run OLS analysis for both models
-run_ols_analysis(area_feature_training_sample, area_target_training_sample)
-run_ols_analysis(district_feature_training_sample, district_target_training_sample)
-
-# Generate correlation heatmaps for both models
+# Correlation heatmap generation
 generate_correlation_heatmap(area_feature_training_sample, (35, 15), "Correlation Heatmap of Area Model's Final Features", 'area_final_features_corr')
 generate_correlation_heatmap(district_feature_training_sample, (30,10), "Correlation Heatmap of District Model's Final Features", 'district_final_features_corr')
