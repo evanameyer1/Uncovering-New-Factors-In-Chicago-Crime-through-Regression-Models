@@ -256,9 +256,10 @@ def proximity_scan_bike_rides(df: pd.DataFrame, distances: list[float]) -> list[
 
     delta_cnts = [[] for _ in range(3)]
 
+    last_row_idx = [0] * 3  # 5 min, 10 min, 15 min
+    
     for i, crime_row in enumerate(crime_np):
         if i % 1000 == 0: print_timestamped_message(f"Processing crime row {i} with time: {crime_row[0]}")
-        last_row_idx = [0] * 3  # 5 min, 10 min, 15 min
 
         target_indicies = binary_search_crime(df_np, crime_row[0], last_row_idx)
         last_row_idx = [start_idx for (start_idx, end_idx) in target_indicies]
