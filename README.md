@@ -16,7 +16,7 @@ Replicable Framework: The methodology and approach can be adapted to other citie
 
 I wrote 3 detailed medium articles that walk through the steps I took for this project:
 
-1. [Data Wrangling & Engineering]([url](https://medium.com/@evanameyer1/uncovering-new-factors-in-chicago-crime-through-regression-models-part-one-d003df8316a2))
+1. [Data Wrangling & Engineering]([https://medium.com/@evanameyer1/uncovering-new-factors-in-chicago-crime-through-regression-models-part-one-d003df8316a2])
    - Data Overview
    - Geospatial Analysis
    - Proximity Analysis
