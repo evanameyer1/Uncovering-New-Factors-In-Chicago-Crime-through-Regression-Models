@@ -12,6 +12,25 @@ Real-Time Application: The ultimate goal is to create a live, dynamic model that
 
 Replicable Framework: The methodology and approach can be adapted to other cities facing similar urban challenges, making it a significant contribution to the field of urban analytics.
 
+## Medium Articles
+
+I wrote 3 detailed medium articles that walk through the steps I took for this project:
+
+1. [Data Wrangling & Engineering]([url](https://medium.com/@evanameyer1/uncovering-new-factors-in-chicago-crime-through-regression-models-part-one-d003df8316a2))
+   - Data Overview
+   - Geospatial Analysis
+   - Proximity Analysis
+   - Feature Engineering
+   - Representative Samples
+2. [Predictive Modeling]([url](https://medium.com/@evanameyer1/uncovering-new-factors-in-chicago-crime-through-regression-models-part-two-d76860664e2e))
+   - Linear Regression
+   - Random Forest
+   - XGBoost
+3. [Analysis & Simulations]([url](https://medium.com/@evanameyer1/uncovering-new-factors-in-chicago-crime-through-regression-models-part-three-c9f02eaabede))
+   - Factor Analysis
+   - Simulation
+   - Final Findings and Analysis
+
 ## Repository Structure
 
 ```
